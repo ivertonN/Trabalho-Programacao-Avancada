@@ -11,4 +11,63 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+/* GET new page post */
+router.get('/new', (req, res, next) => {
+  res.render('new', { title: 'Novo Cadastro', doc: {"nome":"","idade":""}, action: '/new' });
+});
+
+/* GET new page update */
+router.get('/edit/:id', async (req, res, next) => {
+  const id = req.params.id;
+ 
+  try {
+    const doc = await global.db.findOne(id);
+    res.render('new', { title: 'Edição de Cliente', doc, action: '/edit/' + doc._id });
+  } catch (err) {
+    next(err);
+  }
+})
+
+/* Post user. */
+router.post('/new', async (req, res, next) => {
+  const nome = req.body.nome;
+  const idade = parseInt(req.body.idade);
+ 
+  try {
+    const result = await global.db.insert({ nome, idade });
+    console.log(result);
+    res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+});
+
+/* Update user. */
+router.post('/edit/:id', async (req, res) => {
+  const id = req.params.id;
+  const nome = req.body.nome;
+  const idade = parseInt(req.body.idade);
+ 
+  try {
+    const result = await global.db.update(id, { nome, idade });
+    console.log(result);
+    res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+});
+
+/* Delete user. */
+router.get('/delete/:id', async (req, res) => {
+  const id = req.params.id;
+ 
+  try {
+    const result = await global.db.deleteOne(id);
+    console.log(result);
+    res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
