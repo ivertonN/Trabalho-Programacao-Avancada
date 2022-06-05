@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "create-db": "node mongodb_create_db.js",
+    "drop-collection": "node mongodb_drop_collection.js",
+    "init-server": "node ./bin/www",
+    "start": "npm run init-server"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
