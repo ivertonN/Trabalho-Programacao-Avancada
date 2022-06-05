@@ -10,6 +10,8 @@ function findAll() {
 }
 
 function insert(vaga) {
+    vaga.created_at = new Date() 
+
     return global.conn.collection("vagas").insertOne(vaga);
 }
 
@@ -18,7 +20,8 @@ function findOne(id) {
 }
 
 function update(id, vaga) {
-    console.log(vaga)
+    vaga.updated_at = new Date()
+
     return global.conn.collection("vagas").updateOne({ _id: new ObjectId(id) }, { $set: vaga });
 }
  

@@ -10,19 +10,19 @@
       <% docs.forEach(function(vaga){ %>
         <li>
           |
-          <a href="/edit/<%= vaga._id %>">
+          <a href="/edit_page/<%= vaga._id %>">
             <%= vaga.titulo %>
           </a>
-          <a href="/edit/<%= vaga._id %>">
+          <a href="/edit_page/<%= vaga._id %>">
             <%= vaga.valor %>
           </a>
-          <a href="/edit/<%= vaga._id %>">
+          <a href="/edit_page/<%= vaga._id %>">
             <%= vaga.tipo %>
           </a>
-          <a href="/edit/<%= vaga._id %>">
+          <a href="/edit_page/<%= vaga._id %>">
             <%= vaga.empresa.nome %>
           </a>
-          <a href="/edit/<%= vaga._id %>">
+          <a href="/edit_page/<%= vaga._id %>">
             <%= vaga.empresa.cnpj %>
           </a>
           |
@@ -34,6 +34,6 @@
       <% }) %>
     </ul>
     <hr />
-    <a href="/new">Cadastrar nova vaga</a>
+    <a href="/registration_page">Cadastrar nova vaga</a>
   </body>
 </html>
