@@ -6,23 +6,24 @@ mongoClient.connect("mongodb://localhost")
             .catch(err => console.log(err))
 
 function findAll() {
-    return global.conn.collection("customers").find().toArray();
+    return global.conn.collection("vagas").find().toArray();
 }
 
-function insert(customer) {
-    return global.conn.collection("customers").insertOne(customer);
+function insert(vaga) {
+    return global.conn.collection("vagas").insertOne(vaga);
 }
 
 function findOne(id) {
-    return global.conn.collection("customers").findOne(new ObjectId(id));
+    return global.conn.collection("vagas").findOne(new ObjectId(id));
 }
 
-function update(id, customer) {
-    return global.conn.collection("customers").updateOne({ _id: new ObjectId(id) }, { $set: customer });
+function update(id, vaga) {
+    console.log(vaga)
+    return global.conn.collection("vagas").updateOne({ _id: new ObjectId(id) }, { $set: vaga });
 }
  
 function deleteOne(id) {
-    return global.conn.collection("customers").deleteOne({ _id: new ObjectId(id) });
+    return global.conn.collection("vagas").deleteOne({ _id: new ObjectId(id) });
 }
 
 module.exports = { findAll, insert, findOne, update, deleteOne }

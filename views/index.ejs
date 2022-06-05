@@ -7,12 +7,26 @@
   <body>
     <h1><%= title %></h1>
     <ul>
-      <% docs.forEach(function(customer){ %>
+      <% docs.forEach(function(vaga){ %>
         <li>
-          <a href="/edit/<%= customer._id %>">
-            <%= customer.nome %>
+          |
+          <a href="/edit/<%= vaga._id %>">
+            <%= vaga.titulo %>
           </a>
-          <a href="/delete/<%= customer._id %>" 
+          <a href="/edit/<%= vaga._id %>">
+            <%= vaga.valor %>
+          </a>
+          <a href="/edit/<%= vaga._id %>">
+            <%= vaga.tipo %>
+          </a>
+          <a href="/edit/<%= vaga._id %>">
+            <%= vaga.empresa.nome %>
+          </a>
+          <a href="/edit/<%= vaga._id %>">
+            <%= vaga.empresa.cnpj %>
+          </a>
+          |
+          <a href="/delete/<%= vaga._id %>" 
             onclick="return confirm('Tem certeza que deseja excluir?');">
             X
           </a>
@@ -20,6 +34,6 @@
       <% }) %>
     </ul>
     <hr />
-    <a href="/new">Cadastrar novo cliente</a>
+    <a href="/new">Cadastrar nova vaga</a>
   </body>
 </html>
