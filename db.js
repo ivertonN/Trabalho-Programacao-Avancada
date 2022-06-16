@@ -1,12 +1,19 @@
 const mongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectId;
+const TAMANHO_PAGINA = 5
 
 mongoClient.connect("mongodb://localhost")
             .then(conn => global.conn = conn.db("poli_vagas"))
             .catch(err => console.log(err))
 
-function findAll() {
-    return global.conn.collection("vagas").find().toArray();
+function findAll(pagina) {
+    const TAMANHO_PAGINA = 5;
+    const tamanhoSkip = TAMANHO_PAGINA * (pagina - 1); 
+    return global.conn.collection("vagas")
+                        .find()
+                        .skip(tamanhoSkip)
+                        .limit(TAMANHO_PAGINA)
+                        .toArray(); 
 }
 
 function insert(vaga) {
@@ -29,4 +36,8 @@ function deleteOne(id) {
     return global.conn.collection("vagas").deleteOne({ _id: new ObjectId(id) });
 }
 
-module.exports = { findAll, insert, findOne, update, deleteOne }
+function countAll(){  
+    return global.conn.collection("vagas").countDocuments();
+}
+
+module.exports = { findAll, insert, findOne, update, deleteOne, countAll, TAMANHO_PAGINA }

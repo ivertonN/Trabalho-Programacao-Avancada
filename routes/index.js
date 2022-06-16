@@ -60,10 +60,14 @@ function getBlackDoc(){
 };
 
 /* GET home page. */
-router.get('/', async (req, res, next) => {
+router.get('/:pagina?', async (req, res, next) => {
+  const pagina = parseInt(req.params.pagina || "1");
+ 
   try {
-    const docs = await global.db.findAll();
-    res.render('index', { title: 'Lista de Vagas', docs });
+    const docs = await global.db.findAll(pagina);
+    const numeroVagas = await global.db.countAll();
+    const qtdPaginas = Math.ceil(count / global.db.TAMANHO_PAGINA);
+    res.render('index', { title: 'Lista de Clientes', docs, numeroVagas, qtdPaginas });
   } catch (err) {
     next(err);
   }
