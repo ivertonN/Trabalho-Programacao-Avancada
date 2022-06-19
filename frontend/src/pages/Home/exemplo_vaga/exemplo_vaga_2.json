@@ -1,0 +1,28 @@
+{
+  "id": "string",
+  "tipo": "Estágio",
+  "nome_empresa": "Cobra Computadores",
+  "previsao_formatura": "Dez de 2022",
+  "data_limite_anuncio": "Date",
+  "curso": "Enegenharia Elétrica",
+  "cargo": "Estágiário de Desenvolvimento Front-End",
+  "atividades": "Desenvolver interfaces e documnetar código criado",
+  "area_empresa": "Cobra Labs",
+  "modalidade": "Presencial",
+  "carga_horaria_semanal": 30,
+  "local_de_trabalho": "Botafogo/RJ",
+  "valor_da_bolsa": 1890,
+  "vale_refeicao": true,
+  "valor_vale_refeicao": 600,
+  "vale_transporte": true,
+  "valor_vale_transporte": 400,
+  "plano_de_saude": true,
+  "requisitos": "Conhecimentos em Javascript e React",
+  "contato_inscricao_texto": "Envie um e-mail com seu currículo para vagas@cobra.com.br",
+  "contato_inscricao_link": "https://cobra.com.br/vagas",
+  "mais_informacoes": "string",
+  "img": "https://coopermiti.com.br/wp-content/uploads/2020/05/0093508_0..jpg",
+  "created_at": "2022-06-17",
+  "updated_at": "2022-06-17"
+}
+
