@@ -59,15 +59,21 @@ function getBlackDoc(){
   }; 
 };
 
-/* GET home page. */
-router.get('/:pagina?', async (req, res, next) => {
+/* Apenas para testes de conexão */
+router.post("/post", (req, res) => {
+  console.log("Connected to React");
+  res.redirect("/");
+});
+
+/* GET vagas */
+router.get('/vagas/:pagina?', async (req, res, next) => {
   const pagina = parseInt(req.params.pagina || "1");
  
   try {
     const docs = await global.db.findAll(pagina);
     const numeroVagas = await global.db.countAll();
     const qtdPaginas = Math.ceil(numeroVagas / global.db.TAMANHO_PAGINA);
-    res.render('index', { title: 'Lista de Clientes', docs, numeroVagas, qtdPaginas });
+    res.send([ docs ]);
   } catch (err) {
     next(err);
   }

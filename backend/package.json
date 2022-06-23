@@ -5,8 +5,8 @@
   "scripts": {
     "create-db": "node mongodb_create_db.js",
     "drop-collection": "node mongodb_drop_collection.js",
-    "init-server": "node ./bin/www",
-    "start": "npm run init-server"
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
