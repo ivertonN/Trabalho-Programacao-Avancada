@@ -1,9 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { BsDot } from "react-icons/bs";
+import { Form } from "@unform/web";
+import { FormHandles, SubmitHandler } from "@unform/core";
+import TextField from "@material-ui/core/TextField";
 
 // Service Import
 // import api from "../../services/api";
+
+// Component import
+// import Input from "../../components/Input";
+
+// Component import
+import Input from "../../components/Input";
 
 // Examples import
 import exemplo_vaga_1 from "./exemplo_vaga/exemplo_vaga_1.json";
@@ -22,6 +31,11 @@ const Home: React.FC = () => {
   const [vacancies, setVacancies] = useState<IVacancy[]>([]);
   const [currentVacancy, setCurrentVacancy] = useState<IVacancy | null>();
   const [pageNumber, setPageNumber] = useState<number>(1);
+
+  // Local refs
+  const formAdminLoginRef = useRef<FormHandles>(null);
+  const adminLoginInputRef = useRef<HTMLInputElement>(null);
+  const adminPasswordInputRef = useRef<HTMLInputElement>(null);
 
   // Get vacancies
   const getVacancies = useCallback(async () => {
@@ -68,6 +82,16 @@ const Home: React.FC = () => {
     getVacancies();
   }, [getVacancies]);
 
+  // Change store settings
+  const adminLoginSubmit: SubmitHandler<{
+    login: string;
+    password: string;
+  }> = useCallback(async (data) => {
+    // Get login and password from data
+    const { login, password } = data;
+    console.log(login, password);
+  }, []);
+
   return (
     <Container>
       <PageHeader>
@@ -79,9 +103,24 @@ const Home: React.FC = () => {
             />
           </div>
           <div className="loginSection">
-            <p>Login:</p>
-            <p>Senha:</p>
-            <button type="button">Confirmar</button>
+            <Form ref={formAdminLoginRef} onSubmit={adminLoginSubmit}>
+              <p>Acesso a página de admin</p>
+              <Input ref={adminLoginInputRef} name="login" label="login" />
+              <Input
+                ref={adminPasswordInputRef}
+                name="password"
+                label="senha"
+                type="password"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  formAdminLoginRef.current?.submitForm();
+                }}
+              >
+                Confirmar
+              </button>
+            </Form>
           </div>
         </div>
         <div className="appName">

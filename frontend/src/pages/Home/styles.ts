@@ -18,6 +18,27 @@ export const PageHeader = styled.div`
     }
 
     .loginSection {
+      display: flex;
+      flex-direction: column;
+
+      p {
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      button {
+        border-radius: 0.125rem;
+        background-color: #fecda5;
+        &:hover {
+          background-color: #ffcb70;
+        }
+        width: 100%;
+        height: 2rem;
+
+        p {
+          font-weight: 600;
+        }
+      }
     }
   }
 
