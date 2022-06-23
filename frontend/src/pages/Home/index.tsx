@@ -3,7 +3,7 @@ import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { BsDot } from "react-icons/bs";
 
 // Service Import
-// import api from "../../services/api";
+import api from "../../services/api";
 
 // Examples import
 import exemplo_vaga_1 from "./exemplo_vaga/exemplo_vaga_1.json";
