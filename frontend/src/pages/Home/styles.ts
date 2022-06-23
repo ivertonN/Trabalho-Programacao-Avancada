@@ -69,6 +69,7 @@ export const VacanciesPanel = styled.div`
 
 export const VacanciesCard = styled.div`
   margin-bottom: 1rem;
+
   button {
     padding: 1rem;
     border-radius: 0.5rem;
@@ -76,7 +77,7 @@ export const VacanciesCard = styled.div`
     &:hover {
       background-color: #ffcb70;
     }
-    height: 8rem;
+    height: 10rem;
 
     display: flex;
     flex-direction: row;
@@ -91,13 +92,110 @@ export const VacanciesCard = styled.div`
       align-items: flex-start;
 
       .typeRow {
+        margin-bottom: 0.125rem;
         p {
-          font-size: 1rem;
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #2b2676;
         }
       }
       .generalInfo {
         display: flex;
         flex-direction: row;
+        margin-bottom: 0.5rem;
+        p {
+          font-weight: 500;
+          font-size: 1.125rem;
+          color: #2b2676;
+        }
+      }
+
+      .rowInfo {
+        display: flex;
+        flex-direction: row;
+
+        p:first-child {
+          margin-right: 0.375rem;
+          font-weight: 600;
+        }
+
+        p {
+          margin-top: 0.125rem;
+          font-weight: 500;
+          font-size: 1rem;
+          color: #2b2676;
+        }
+      }
+    }
+
+    .iconSection {
+      width: 10%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+
+      svg {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+  }
+
+  .fullCard {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #fecda5;
+
+    height: 24rem;
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 90%;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      .typeRow {
+        margin-bottom: 0.125rem;
+        p {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #2b2676;
+        }
+      }
+      .generalInfo {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 0.5rem;
+        p {
+          font-weight: 500;
+          font-size: 1.125rem;
+          color: #2b2676;
+        }
+      }
+
+      .rowInfo {
+        display: flex;
+        flex-direction: row;
+
+        p:first-child {
+          margin-right: 0.375rem;
+          font-weight: 600;
+        }
+
+        p {
+          margin-top: 0.125rem;
+          font-weight: 500;
+          font-size: 1rem;
+          color: #2b2676;
+        }
       }
     }
 
