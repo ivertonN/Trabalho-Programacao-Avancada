@@ -27,8 +27,11 @@ const Home: React.FC = () => {
   const getVacancies = useCallback(async () => {
     try {
       // API call
-      // const response = await api.get("admin/store", {});
-
+      // await fetch("http://localhost:8080/post", { method: "POST" });
+      const response = await api.get("/vagas/1", {});
+      const { vagas } = response.data;
+      // response = Object.keys(response).map(i => JSON.parse(response[Number(i)]));
+      /*
       const response = [
         exemplo_vaga_1,
         exemplo_vaga_2,
@@ -46,8 +49,8 @@ const Home: React.FC = () => {
         exemplo_vaga_2,
         exemplo_vaga_3,
       ];
-
-      setVacancies(response);
+      */
+      setVacancies(vagas);
       // setFilteredOriginalData(response);
       // setFilteredData(response);
 

@@ -67,13 +67,14 @@ router.post("/post", (req, res) => {
 
 /* GET vagas */
 router.get('/vagas/:pagina?', async (req, res, next) => {
+  console.log("vagas response");
   const pagina = parseInt(req.params.pagina || "1");
  
   try {
     const docs = await global.db.findAll(pagina);
     const numeroVagas = await global.db.countAll();
     const qtdPaginas = Math.ceil(numeroVagas / global.db.TAMANHO_PAGINA);
-    res.send([ docs ]);
+    res.json({ vagas: docs });
   } catch (err) {
     next(err);
   }
@@ -81,6 +82,7 @@ router.get('/vagas/:pagina?', async (req, res, next) => {
 
 /* GET new page post */
 router.get('/registration_page', (req, res, next) => {
+  console.log("registration_page");
   res.render('new', { title: 'Novo Cadastro', doc: getBlackDoc(), action: '/new' });
 });
 
