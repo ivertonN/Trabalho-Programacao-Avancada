@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form action="<%= action %>" method="POST">
+      <p>Titulo:<input type="text" name="titulo" value="<%= doc.titulo %>" /></p>
+      <p>Valor:<input type="number" name="valor" value="<%= doc.valor %>" /></p>
+      <p>Tipo:<input type="text" name="tipo" value="<%= doc.tipo %>" /></p>
+      <p>Empresa:<input type="text" name="empresa_nome" value="<%= doc.empresa.nome %>" /></p>
+      <p>CNPJ:<input type="text" name="empresa_cnpj" value="<%= doc.empresa.cnpj %>" /></p>
+      <input type="submit" value="Salvar" />
+    </form>
+  </body>
+</html>
