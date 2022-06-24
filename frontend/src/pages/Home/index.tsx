@@ -41,7 +41,12 @@ const Home: React.FC = () => {
   const getVacancies = useCallback(async () => {
     try {
       // API call
-      const response = await api.get(`/vagas/${pageNumber}`, {});
+      const vacancyTypeFilter = vacancyType === "" ? "_" : vacancyType;
+      const courseTypeFilter = course === "" ? "_" : course;
+
+      const response = await api.get(
+        `/vagas/${pageNumber}/${vacancyTypeFilter}/${courseTypeFilter}`
+      );
 
       setVacancies(response.data.vagas);
     } catch (err: any) {
@@ -50,7 +55,7 @@ const Home: React.FC = () => {
 
       throw err;
     }
-  }, [pageNumber]);
+  }, [pageNumber, course, vacancyType]);
 
   // Initial load
   useEffect(() => {
@@ -79,6 +84,7 @@ const Home: React.FC = () => {
     }>
   ) => {
     setCourse(event.target.value);
+    setPageNumber(1);
   };
 
   const handleVacancyType = (
@@ -88,6 +94,7 @@ const Home: React.FC = () => {
     }>
   ) => {
     setVacancyType(event.target.value);
+    setPageNumber(1);
   };
 
   return (

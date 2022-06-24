@@ -1,34 +1,48 @@
 var express = require('express');
 var router = express.Router();
 
+function addMonths(date, months) {
+  date.setMonth(date.getMonth() + months);
+  return date;
+}
+
 function createDoc(body) {
-  return {
+  const doc = {
     //obrigatorios
-    tipo                    : body.titulo,
-    nome_empresa            : body.nome_empresa,
-    data_limite_anuncio     : new Date(body.data_limite_anuncio),
-    cursos                  : body.cursos,
-    cargo                   : body.cargo,
-    atividades              : body.atividades,
-    requisitos              : body.requisitos,
-    contato_inscricao_texto : body.contato_inscricao_texto,
+    tipo                    : (body.tipo != null) ? body.tipo : null,
+    nome_empresa            : (body.nome_empresa != null) ? body.nome_empresa : null,
+    data_limite_anuncio     : (body.data_limite_anuncio != null) ? new Date(body.data_limite_anuncio) : addMonths(new Date(), 6),
+    cursos                  : (body.cursos != null) ? body.cursos : null,
+    cargo                   : (body.cargo != null) ? body.cargo : null,
+    atividades              : (body.atividades != null) ? body.atividades : null,
+    requisitos              : (body.atividades != null) ? body.atividades : null,
+    contato_inscricao_texto : (body.contato_inscricao_texto != null) ? body.contato_inscricao_texto : null,
     //opcionais - aplica null se for undefined ou null - podemos escolher nao subir no doc
-    previsao_formatura     : ((body.previsao_formatura     == null) ? body.area_empresa                      : null),
-    area_empresa           : ((body.area_empresa           == null) ? body.area_empresa                      : null),
-    modalidade             : ((body.modalidade             == null) ? body.modalidade                        : null),
-    carga_horaria_semanal  : ((body.carga_horaria_semanal  == null) ? parseInt(body.carga_horaria_semanal)   : null),
-    local_de_trabalho      : ((body.local_de_trabalho      == null) ? body.local_de_trabalho                 : null),
-    valor_da_bolsa         : ((body.valor_da_bolsa         == null) ? parseFloat(body.valor_da_bolsa)        : null),
-    vale_refeicao          : ((body.vale_refeicao          == null) ? body.vale_refeicao                     : null),
-    valor_vale_refeicao    : ((body.valor_vale_refeicao    == null) ? parseFloat(body.valor_vale_refeicao)   : null),
-    vale_transporte        : ((body.vale_transporte        == null) ? body.vale_transporte                   : null),
-    valor_vale_transporte  : ((body.valor_vale_transporte  == null) ? parseFloat(body.valor_vale_transporte) : null),
-    plano_de_saude         : ((body.plano_de_saude         == null) ? body.plano_de_saude                    : null),
-    contato_inscricao_link : ((body.contato_inscricao_link == null) ? body.contato_inscricao_link            : null),
-    mais_informacoes       : ((body.mais_informacoes       == null) ? body.mais_informacoes                  : null),
-    img                    : ((body.img                    == null) ? body.img                               : null),    
-    titulo                 : ((body.titulo                 == null) ? body.titulo                            : null),  
+    previsao_formatura     : ((body.previsao_formatura     != null) ? body.area_empresa                      : null),
+    area_empresa           : ((body.area_empresa           != null) ? body.area_empresa                      : null),
+    modalidade             : ((body.modalidade             != null) ? body.modalidade                        : null),
+    carga_horaria_semanal  : ((body.carga_horaria_semanal  != null) ? parseInt(body.carga_horaria_semanal)   : null),
+    local_de_trabalho      : ((body.local_de_trabalho      != null) ? body.local_de_trabalho                 : null),
+    valor_da_bolsa         : ((body.valor_da_bolsa         != null) ? parseFloat(body.valor_da_bolsa)        : null),
+    vale_refeicao          : ((body.vale_refeicao          != null) ? body.vale_refeicao                     : null),
+    valor_vale_refeicao    : ((body.valor_vale_refeicao    != null) ? parseFloat(body.valor_vale_refeicao)   : null),
+    vale_transporte        : ((body.vale_transporte        != null) ? body.vale_transporte                   : null),
+    valor_vale_transporte  : ((body.valor_vale_transporte  != null) ? parseFloat(body.valor_vale_transporte) : null),
+    plano_de_saude         : ((body.plano_de_saude         != null) ? body.plano_de_saude                    : null),
+    contato_inscricao_link : ((body.contato_inscricao_link != null) ? body.contato_inscricao_link            : null),
+    mais_informacoes       : ((body.mais_informacoes       != null) ? body.mais_informacoes                  : null),
+    img                    : ((body.img                    != null) ? body.img                               : null),    
+    titulo                 : ((body.titulo                 != null) ? body.titulo                            : null),  
   };
+
+  //retira valores null
+  Object.keys(doc).forEach((index) => {
+    if(doc[index] === null) {
+      delete doc[index]
+    }
+  });
+
+  return doc;
 };
 
 function getBlackDoc(){
@@ -77,18 +91,18 @@ function tratarFiltro(nome, filtros){
 }
 
 /* GET vagas */
-router.get('/vagas/:pagina?', async (req, res, next) => {
+router.get('/vagas/:pagina/:tipo/:cursos', async (req, res, next) => {
   console.log("vagas response");
   const pagina = parseInt(req.params.pagina || "1");
 
-  req.params.tipo = ['EST\u00c1GIO']
-  req.params.cursos = ['ENGENHARIA DE PETR\u00d3LEO', 'TODAS AS ENGENHARIAS']
+//  req.params.tipo = ['EST\u00c1GIO']
+//  req.params.cursos = ['ENGENHARIA DE PETR\u00d3LEO', 'TODAS AS ENGENHARIAS']
 
-  let filtroTipos = []
-  let filtroCursos = []
+  let filtroTipos = ( req.params.tipo === "_" ) ? [] : [req.params.tipo]
+  let filtroCursos = ( req.params.cursos === "_" ) ? [] : [req.params.cursos]
 
-  if (req.params.tipo || null){ filtroTipos = filtroTipos.concat( tratarFiltro('tipo', req.params.tipo) ) }
-  if (req.params.cursos || null){ filtroCursos = filtroCursos.concat( tratarFiltro('cursos', req.params.cursos) ) }
+  if (req.params.tipo || null){ filtroTipos = tratarFiltro('tipo', filtroTipos) }
+  if (req.params.cursos || null){ filtroCursos = tratarFiltro('cursos', filtroCursos) }
 
   try {
     const docs = await global.db.findAll(pagina, filtroTipos, filtroCursos);
@@ -133,21 +147,21 @@ router.post('/new', async (req, res, next) => {
 });
 
 /* Update user. */
-router.post('/edit/:id', async (req, res) => {
+router.post('/edit/:id', async (req, res, next) => {
   const id = req.params.id;
   const doc = createDoc(req.body)
 
   try {
     const result = await global.db.update(id, doc);
     console.log(result);
-    res.redirect('/');
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });
 
 /* Delete user. */
-router.get('/delete/:id', async (req, res) => {
+router.get('/delete/:id', async (req, res, next) => {
   const id = req.params.id;
  
   try {

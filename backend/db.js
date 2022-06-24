@@ -25,7 +25,7 @@ function findAll(pagina, filtroTipos, filtroCursos) {
     if (filtroCursos.length) { andFinal.push( orCursos ) }
 
     const filtros = {}
-    if (filtros.length) { filtros['$and'] = andFinal }
+    if (andFinal.length) { filtros['$and'] = andFinal }
 
     return global.conn.collection(COLLECTION_NAME)
                         .find(filtros)
@@ -46,7 +46,6 @@ function findOne(id) {
 
 function update(id, vaga) {
     vaga.updated_at = new Date()
-
     return global.conn.collection(COLLECTION_NAME).updateOne({ _id: new ObjectId(id) }, { $set: vaga });
 }
  
