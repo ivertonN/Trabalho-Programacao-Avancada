@@ -1,12 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
+function addMonths(date, months) {
+  date.setMonth(date.getMonth() + months);
+  return date;
+}
+
 function createDoc(body) {
   const doc = {
     //obrigatorios
     tipo                    : (body.tipo != null) ? body.tipo : null,
     nome_empresa            : (body.nome_empresa != null) ? body.nome_empresa : null,
-    data_limite_anuncio     : (body.data_limite_anuncio != null) ? new Date(body.data_limite_anuncio) : null,
+    data_limite_anuncio     : (body.data_limite_anuncio != null) ? new Date(body.data_limite_anuncio) : addMonths(new Date(), 6),
     cursos                  : (body.cursos != null) ? body.cursos : null,
     cargo                   : (body.cargo != null) ? body.cargo : null,
     atividades              : (body.atividades != null) ? body.atividades : null,
