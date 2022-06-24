@@ -65,13 +65,33 @@ router.post("/post", (req, res) => {
   res.redirect("/");
 });
 
+function tratarFiltro(nome, filtros){
+  const filtrosTratado = []
+  filtros.map((e) => {
+    const obj = {}
+    obj[nome] =  e
+    filtrosTratado.push(obj)
+  })
+
+  return filtrosTratado
+}
+
 /* GET vagas */
 router.get('/vagas/:pagina?', async (req, res, next) => {
   console.log("vagas response");
   const pagina = parseInt(req.params.pagina || "1");
- 
+
+  req.params.tipo = ['EST\u00c1GIO']
+  req.params.cursos = ['ENGENHARIA DE PETR\u00d3LEO', 'TODAS AS ENGENHARIAS']
+
+  let filtroTipos = []
+  let filtroCursos = []
+
+  if (req.params.tipo || null){ filtroTipos = filtroTipos.concat( tratarFiltro('tipo', req.params.tipo) ) }
+  if (req.params.cursos || null){ filtroCursos = filtroCursos.concat( tratarFiltro('cursos', req.params.cursos) ) }
+
   try {
-    const docs = await global.db.findAll(pagina);
+    const docs = await global.db.findAll(pagina, filtroTipos, filtroCursos);
     const numeroVagas = await global.db.countAll();
     const qtdPaginas = Math.ceil(numeroVagas / global.db.TAMANHO_PAGINA);
     res.json({ vagas: docs });
