@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { BsDot } from "react-icons/bs";
 import { Form } from "@unform/web";
 import { FormHandles, SubmitHandler } from "@unform/core";
-import TextField from "@material-ui/core/TextField";
 
 // Service Import
 // import api from "../../services/api";
@@ -20,7 +20,7 @@ import exemplo_vaga_2 from "./exemplo_vaga/exemplo_vaga_2.json";
 import exemplo_vaga_3 from "./exemplo_vaga/exemplo_vaga_3.json";
 
 // Model import
-import { IVacancy } from "./models";
+import { IVacancy } from "../../models";
 
 // Style import
 import { Container, PageHeader, VacanciesPanel, VacanciesCard } from "./styles";
@@ -31,11 +31,16 @@ const Home: React.FC = () => {
   const [vacancies, setVacancies] = useState<IVacancy[]>([]);
   const [currentVacancy, setCurrentVacancy] = useState<IVacancy | null>();
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [adminAccess, setAdminAccess] = useState<boolean>(false);
 
   // Local refs
   const formAdminLoginRef = useRef<FormHandles>(null);
   const adminLoginInputRef = useRef<HTMLInputElement>(null);
   const adminPasswordInputRef = useRef<HTMLInputElement>(null);
+
+  // Get navigation hook
+  // const history = useHistory();
+  // const navigate = useNavigate();
 
   // Get vacancies
   const getVacancies = useCallback(async () => {
@@ -89,7 +94,15 @@ const Home: React.FC = () => {
   }> = useCallback(async (data) => {
     // Get login and password from data
     const { login, password } = data;
-    console.log(login, password);
+
+    if (login === "iverton.darlan" && password === "123456") {
+      setAdminAccess(true);
+    } else {
+      setAdminAccess(false);
+    }
+
+    //   vaiPraPagina(/admin)
+    // }
   }, []);
 
   return (
@@ -105,21 +118,31 @@ const Home: React.FC = () => {
           <div className="loginSection">
             <Form ref={formAdminLoginRef} onSubmit={adminLoginSubmit}>
               <p>Acesso a página de admin</p>
-              <Input ref={adminLoginInputRef} name="login" label="login" />
-              <Input
-                ref={adminPasswordInputRef}
-                name="password"
-                label="senha"
-                type="password"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  formAdminLoginRef.current?.submitForm();
-                }}
-              >
-                Confirmar
-              </button>
+              {adminAccess === false ? (
+                <>
+                  <Input ref={adminLoginInputRef} name="login" label="login" />
+                  <Input
+                    ref={adminPasswordInputRef}
+                    name="password"
+                    label="senha"
+                    type="password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      formAdminLoginRef.current?.submitForm();
+                    }}
+                  >
+                    <p>Confirmar</p>
+                  </button>
+                </>
+              ) : (
+                <Link to="/admin">
+                  <div className="adminLink">
+                    <p>Acesso a área admin</p>
+                  </div>
+                </Link>
+              )}
             </Form>
           </div>
         </div>

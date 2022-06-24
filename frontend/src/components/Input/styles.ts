@@ -1,3 +1,4 @@
+import { transparentize } from "polished";
 import styled, { css } from "styled-components";
 
 interface IContainerProps {
@@ -21,9 +22,8 @@ export const Container = styled.div<IContainerProps>`
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-    box-shadow: 0 0 0 30px ${({ theme }) =>
-      theme.background_primary} inset !important;
-    color: ${({ theme }) => theme.font_primary} !important;
+    box-shadow: 0 0 0 30px #ffffff inset !important;
+    color: #ffffff !important;
   }
 
   ${(props) =>
@@ -38,57 +38,72 @@ export const Container = styled.div<IContainerProps>`
     label,
     p {
       &.Mui-focused {
-        color: ${({ theme }) => theme.font_secondary} !important;
+        color: #000000 !important;
       }
 
       &.Mui-error {
-        color: ${({ theme }) => theme.font_danger} !important;
+        color: #eb5757 !important;
       }
 
-      color: ${({ theme }) => theme.font_secondary};
+      &.Mui-disabled {
+        color: ${() => transparentize(0.5, "#fecda5")} !important;
+      }
+
+      color: #000000;
     }
 
     > .MuiInputBase-root {
       &.Mui-focused {
         input {
-          color: ${({ theme }) => theme.font_primary} !important;
+          color: #000000 !important;
         }
 
         fieldset {
-          border-color: ${({ theme }) => theme.font_secondary} !important;
+          border-color: #fecda5 !important;
         }
 
         svg {
-          color: ${({ theme }) => theme.font_secondary} !important;
+          color: #fecda5 !important;
         }
       }
 
       &.Mui-error {
         input {
-          color: ${({ theme }) => theme.font_danger} !important;
+          color: #eb5757 !important;
         }
 
         fieldset {
-          border-color: ${({ theme }) => theme.font_danger} !important;
+          border-color: #eb5757 !important;
         }
 
         svg {
-          color: ${({ theme }) => theme.font_danger} !important;
+          color: #eb5757 !important;
         }
       }
 
+      &.Mui-disabled {
+        input {
+          color: ${() => transparentize(0.5, "#fecda5")} !important;
+        }
+
+        fieldset {
+          border-color: ${() => transparentize(0.5, "#fecda5")} !important;
+        }
+
+        svg {
+          color: ${() => transparentize(0.5, "#fecda5")} !important;
       }
 
       input {
-        color: ${({ theme }) => theme.font_primary};
+        color: #ffffff;
       }
 
       svg {
-        color: ${({ theme }) => theme.font_secondary};
+        color: #fecda5;
       }
 
       fieldset {
-        border-color: ${({ theme }) => theme.font_secondary};
+        border-color: #fecda5;
       }
     }
   }

@@ -36,7 +36,17 @@ export const PageHeader = styled.div`
         height: 2rem;
 
         p {
-          font-weight: 600;
+          font-weight: 500;
+          font-size: 1rem;
+        }
+      }
+
+      .adminLink {
+        p {
+          color: #0693e3;
+          font-weight: 500;
+          text-decoration: underline;
+          font-style: italic;
         }
       }
     }
