@@ -4,7 +4,7 @@ export interface IVacancy {
   nome_empresa: string;
   previsao_formatura?: string;
   data_limite_anuncio: string;
-  curso: string;
+  cursos: string;
   cargo: string;
   atividades: string;
   area_empresa?: string;

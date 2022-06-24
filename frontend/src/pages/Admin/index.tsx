@@ -1,23 +1,24 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
+import {
+  MdKeyboardArrowRight,
+  MdKeyboardArrowLeft,
+  MdArrowBack,
+} from "react-icons/md";
 import { BsDot } from "react-icons/bs";
 import { Form } from "@unform/web";
 import { FormHandles, SubmitHandler } from "@unform/core";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 
 // Service Import
-// import api from "../../services/api";
+import api from "../../services/api";
 
 // Component import
 // import Input from "../../components/Input";
 
 // Component import
 import Input from "../../components/Input";
-
-// Examples import
-import exemplo_vaga_1 from "./exemplo_vaga/exemplo_vaga_1.json";
-import exemplo_vaga_2 from "./exemplo_vaga/exemplo_vaga_2.json";
-import exemplo_vaga_3 from "./exemplo_vaga/exemplo_vaga_3.json";
 
 // Model import
 import { IVacancy } from "../../models";
@@ -32,11 +33,31 @@ const Admin: React.FC = () => {
   const [currentVacancy, setCurrentVacancy] = useState<IVacancy | null>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [adminAccess, setAdminAccess] = useState<boolean>(false);
+  const [course, setCourse] = useState<any>("");
+  const [vacancyType, setVacancyType] = useState<any>("");
+  const [createVacancyMode, setCreateVacancyMode] = useState(false);
 
   // Local refs
-  const formAdminLoginRef = useRef<FormHandles>(null);
-  const adminLoginInputRef = useRef<HTMLInputElement>(null);
+  const formVacancyCreationRef = useRef<FormHandles>(null);
+
   const adminPasswordInputRef = useRef<HTMLInputElement>(null);
+
+  const adminLoginInputRef = useRef<HTMLInputElement>(null);
+  const areaEmpresaInputRef = useRef<HTMLInputElement>(null);
+  const atividadesInputRef = useRef<HTMLInputElement>(null);
+  const cargaHorariaSemanalInputRef = useRef<HTMLInputElement>(null);
+  const cargoInputRef = useRef<HTMLInputElement>(null);
+  const contatoInscricaoLinkInputRef = useRef<HTMLInputElement>(null);
+  const contatoInscricaoInputRef = useRef<HTMLInputElement>(null);
+  const cursosInputRef = useRef<HTMLInputElement>(null);
+  const imgInputRef = useRef<HTMLInputElement>(null);
+  const localDeTrabalhoInputRef = useRef<HTMLInputElement>(null);
+  const maisInformacoesInputRef = useRef<HTMLInputElement>(null);
+  const modalidadeLoginInputRef = useRef<HTMLInputElement>(null);
+  const nomeEmpresaInputRef = useRef<HTMLInputElement>(null);
+  const previsaoFormaturaInputRef = useRef<HTMLInputElement>(null);
+  const requisitosInputRef = useRef<HTMLInputElement>(null);
+  const tipoInputRef = useRef<HTMLInputElement>(null);
 
   // Get navigation hook
   // const history = useHistory();
@@ -46,31 +67,9 @@ const Admin: React.FC = () => {
   const getVacancies = useCallback(async () => {
     try {
       // API call
-      // const response = await api.get("admin/store", {});
+      const response = await api.get(`/vagas/${pageNumber}`, {});
 
-      const response = [
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-      ];
-
-      setVacancies(response);
-      // setFilteredOriginalData(response);
-      // setFilteredData(response);
-
-      // setLoading(false);
+      setVacancies(response.data.vagas);
     } catch (err: any) {
       // eslint-disable-next-line no-console
       console.log(err);
@@ -80,7 +79,7 @@ const Admin: React.FC = () => {
 
       throw err;
     }
-  }, []);
+  }, [pageNumber]);
 
   // Initial load
   useEffect(() => {
@@ -89,21 +88,82 @@ const Admin: React.FC = () => {
 
   // Change store settings
   const adminLoginSubmit: SubmitHandler<{
-    login: string;
-    password: string;
+    areaEmpresa: string;
+    atividades: string;
+    cargaHorariaSemanal: string; // number
+    cargo: string;
+    contatoInscricaoLink: string;
+    contatoInscricao: string;
+    cursos: string;
+    img: string;
+    localDeTrabalho: string;
+    maisInformacoes: string;
+    modalidade: string;
+    nomeEmpresa: string;
+    previsaoFormatura: string;
+    requisitos: string;
+    tipo: string;
   }> = useCallback(async (data) => {
     // Get login and password from data
-    const { login, password } = data;
+    const {
+      nomeEmpresa,
+      areaEmpresa,
+      atividades,
+      cargaHorariaSemanal,
+      cargo,
+      contatoInscricaoLink,
+      contatoInscricao,
+      cursos,
+      img,
+      localDeTrabalho,
+      maisInformacoes,
+      modalidade,
+      previsaoFormatura,
+      requisitos,
+      tipo,
+    } = data;
 
-    if (login === "iverton.darlan" && password === "123456") {
-      setAdminAccess(true);
-    } else {
-      setAdminAccess(false);
+    try {
+      // const response =
+      await api.post(`/`, {
+        nome_empresa: nomeEmpresa,
+        area_empresa: areaEmpresa,
+        atividades,
+        carga_horaria_semanal: Number(cargaHorariaSemanal),
+        cargo,
+        contato_inscricao_link: contatoInscricaoLink,
+        contato_inscricao: contatoInscricao,
+        cursos,
+        img,
+        local_de_trabalho: localDeTrabalho,
+        mais_informacoes: maisInformacoes,
+        modalidade,
+        previsao_formatura: previsaoFormatura,
+        requisitos,
+        tipo,
+      });
+    } catch (err: any) {
+      console.log(err);
     }
-
-    //   vaiPraPagina(/admin)
-    // }
   }, []);
+
+  const handleCourseType = (
+    event: React.ChangeEvent<{
+      name?: string;
+      value: unknown;
+    }>
+  ) => {
+    setCourse(event.target.value);
+  };
+
+  const handleVacancyType = (
+    event: React.ChangeEvent<{
+      name?: string;
+      value: unknown;
+    }>
+  ) => {
+    setVacancyType(event.target.value);
+  };
 
   return (
     <Container>
@@ -122,9 +182,30 @@ const Admin: React.FC = () => {
       </PageHeader>
       {currentVacancy ? (
         <>
-          <button type="button" onClick={() => setCurrentVacancy(null)}>
-            voltar
-          </button>
+          <div className="menu">
+            <div className="backSection">
+              <button type="button" onClick={() => setCurrentVacancy(null)}>
+                <div className="back">
+                  <MdArrowBack />
+                  <p>voltar</p>
+                </div>
+              </button>
+            </div>
+            <div className="otherButtonsSection">
+              <button
+                type="button"
+                // onClick={() => setCreateVacancyMode(true)}
+              >
+                <p>Editar Oportunidade</p>
+              </button>
+              <button
+                type="button"
+                // onClick={() => setCreateVacancyMode(true)}
+              >
+                <p>Excluir Oportunidade</p>
+              </button>
+            </div>
+          </div>
           <VacanciesCard>
             <div className="fullCard">
               <div className="content">
@@ -132,63 +213,144 @@ const Admin: React.FC = () => {
                   <p>{currentVacancy.tipo}</p>
                 </div>
                 <div className="generalInfo">
-                  <p>{currentVacancy.nome_empresa}</p>
-                  <BsDot />
-                  <p>{currentVacancy.modalidade}</p>
-                  <BsDot />
-                  <p>{currentVacancy.local_de_trabalho}</p>
-                  <BsDot />
+                  {currentVacancy.nome_empresa && (
+                    <p>{currentVacancy.nome_empresa}</p>
+                  )}
+                  {currentVacancy.modalidade && (
+                    <>
+                      <BsDot />
+                      <p>{currentVacancy.modalidade}</p>
+                    </>
+                  )}
+                  {currentVacancy.local_de_trabalho && (
+                    <>
+                      <BsDot />
+                      <p>{currentVacancy.local_de_trabalho}</p>
+                    </>
+                  )}
                   {currentVacancy.previsao_formatura && (
-                    <p>Formando até {currentVacancy.previsao_formatura}</p>
+                    <>
+                      <BsDot />
+                      <p>Formando até {currentVacancy.previsao_formatura}</p>
+                    </>
                   )}
                 </div>
                 <div className="rowInfo">
                   <p>Cursos: </p>
-                  <p>{currentVacancy.curso}</p>
+                  <p>{currentVacancy.cursos}</p>
                 </div>
                 <div className="rowInfo">
                   <p>Cargo: </p>
-                  <p>{currentVacancy.cargo}</p>
+                  {currentVacancy.cargo ? (
+                    <p>{currentVacancy.cargo}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Atividades: </p>
-                  <p>{currentVacancy.atividades}</p>
+                  {currentVacancy.atividades ? (
+                    <p>{currentVacancy.atividades}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Remuneração: </p>
-                  <p>{currentVacancy.valor_da_bolsa}</p>
+                  {currentVacancy.valor_da_bolsa ? (
+                    <p>
+                      {currentVacancy.valor_da_bolsa.toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Area da Empresa: </p>
-                  <p>{currentVacancy.area_empresa}</p>
+                  {currentVacancy.area_empresa ? (
+                    <p>{currentVacancy.area_empresa}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Requisitos: </p>
-                  <p>{currentVacancy.requisitos}</p>
+                  {currentVacancy.requisitos ? (
+                    <p>{currentVacancy.requisitos}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Carga Horária: </p>
-                  <p>{currentVacancy.carga_horaria_semanal}</p>
+                  {currentVacancy.carga_horaria_semanal ? (
+                    <p>{currentVacancy.carga_horaria_semanal}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Vale Refeição: </p>
-                  <p>{currentVacancy.vale_refeicao}</p>
+                  {currentVacancy.vale_refeicao === true &&
+                  currentVacancy.valor_vale_refeicao ? (
+                    <p>
+                      {currentVacancy.valor_vale_refeicao?.toLocaleString(
+                        "pt-br",
+                        {
+                          style: "currency",
+                          currency: "BRL",
+                        }
+                      )}
+                    </p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Vale Transporte: </p>
-                  <p>{currentVacancy.vale_transporte}</p>
+                  {currentVacancy.vale_transporte === true &&
+                  currentVacancy.valor_vale_transporte ? (
+                    <p>
+                      {currentVacancy.valor_vale_transporte?.toLocaleString(
+                        "pt-br",
+                        {
+                          style: "currency",
+                          currency: "BRL",
+                        }
+                      )}
+                    </p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Plano de Saúde: </p>
-                  <p>{currentVacancy.plano_de_saude}</p>
+                  {currentVacancy.plano_de_saude === true ? (
+                    <p>sim</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Contato para inscrição: </p>
-                  <p>{currentVacancy.contato_inscricao_texto}</p>
+                  {currentVacancy.contato_inscricao_texto ? (
+                    <p>{currentVacancy.contato_inscricao_texto}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Link: </p>
-                  <p>{currentVacancy.contato_inscricao_link}</p>
+                  {currentVacancy.contato_inscricao_link ? (
+                    <a href={currentVacancy.contato_inscricao_link}>
+                      {currentVacancy.contato_inscricao_link}
+                    </a>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
               </div>
               <div className="imageSection">
@@ -201,82 +363,283 @@ const Admin: React.FC = () => {
           </VacanciesCard>
         </>
       ) : (
-        <VacanciesPanel>
-          <div className="menuPanel">
-            <p>Selecione o tipo</p>
-            <p>Selecione o curso</p>
-          </div>
-          <div className="vacanciesList">
-            {vacancies.map((vacancy) => (
-              <VacanciesCard>
-                <button
-                  type="button"
-                  onClick={() => setCurrentVacancy(vacancy)}
-                >
-                  <div className="content">
-                    <div className="typeRow">
-                      <p>{vacancy.tipo}</p>
+        <>
+          <div />
+          {createVacancyMode === true ? (
+            <>
+              <div className="menu">
+                <div className="backSection">
+                  <button
+                    type="button"
+                    onClick={() => setCreateVacancyMode(false)}
+                  >
+                    <div className="back">
+                      <MdArrowBack />
+                      <p>voltar</p>
                     </div>
-                    <div className="generalInfo">
-                      <p>{vacancy.nome_empresa}</p>
-                      <BsDot />
-                      <p>{vacancy.modalidade}</p>
-                      <BsDot />
-                      <p>{vacancy.local_de_trabalho}</p>
-                      <BsDot />
-                      {vacancy.previsao_formatura && (
-                        <p>Formando até {vacancy.previsao_formatura}</p>
-                      )}
-                    </div>
-                    <div className="rowInfo">
-                      <p>Cursos: </p>
-                      <p>{vacancy.curso}</p>
-                    </div>
-                    <div className="rowInfo">
-                      <p>Cargo: </p>
-                      <p>{vacancy.cargo}</p>
-                    </div>
-                    <div className="rowInfo">
-                      <p>Atividades: </p>
-                      <p>{vacancy.atividades}</p>
-                    </div>
-                    <div className="rowInfo">
-                      <p>Remuneração: </p>
-                      <p>{vacancy.valor_da_bolsa}</p>
-                    </div>
+                  </button>
+                </div>
+              </div>
+              <div className="formSection">
+                <div className="form">
+                  <Form
+                    ref={formVacancyCreationRef}
+                    onSubmit={adminLoginSubmit}
+                  >
+                    <Input
+                      ref={tipoInputRef}
+                      name="tipo"
+                      label="Tipo de Vaga"
+                    />
+                    <Input
+                      ref={nomeEmpresaInputRef}
+                      name="nomeEmpresa"
+                      label="Nome da Empresa"
+                    />
+                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
+                    <Input
+                      ref={areaEmpresaInputRef}
+                      name="areaEmpresa"
+                      label="Area da Empresa"
+                    />
+                    <Input
+                      ref={atividadesInputRef}
+                      name="atividades"
+                      label="Atividades"
+                    />
+                    <Input
+                      ref={cargaHorariaSemanalInputRef}
+                      name="cargaHorariaSemanal"
+                      label="Carga Horaria Semanal"
+                    />
+                    <Input ref={cargoInputRef} name="cargo" label="Cargo" />
+                    <Input
+                      ref={contatoInscricaoLinkInputRef}
+                      name="contatoInscricaoLink"
+                      label="Link de Inscrição"
+                    />
+                    <Input
+                      ref={contatoInscricaoInputRef}
+                      name="contatoInscricao"
+                      label="Contato de Inscrição"
+                    />
+                    {/* <Input ref={createdAtInputRef} name="createdAt" label="Data de Lancamento" /> */}
+                    <Input ref={cursosInputRef} name="cursos" label="Curso" />
+                    {/* <Input ref={data_limite_anuncioInputRef} name="login" label="login" /> */}
+                    <Input
+                      ref={imgInputRef}
+                      name="img"
+                      label="Link da Imagem"
+                    />
+                    <Input
+                      ref={localDeTrabalhoInputRef}
+                      name="localDeTrabalho"
+                      label="Local De Trabalho"
+                    />
+                    <Input
+                      ref={maisInformacoesInputRef}
+                      name="maisInformacoes"
+                      label="Mais Informações"
+                    />
+                    <Input
+                      ref={modalidadeLoginInputRef}
+                      name="modalidade"
+                      label="Modalidade"
+                    />
+                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
+                    <Input
+                      ref={previsaoFormaturaInputRef}
+                      name="previsaoFormatura"
+                      label="Previsao De Formatura"
+                    />
+                    <Input
+                      ref={requisitosInputRef}
+                      name="requisitos"
+                      label="Requisitos"
+                    />
+                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
+                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
+                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
+                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
+                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
+                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        formVacancyCreationRef.current?.submitForm();
+                        setCreateVacancyMode(false);
+                      }}
+                    >
+                      <p>Confirmar</p>
+                    </button>
+                  </Form>
+                </div>
+              </div>
+            </>
+          ) : (
+            <VacanciesPanel>
+              <div className="menuPanel">
+                <div className="filterSection">
+                  <div className="filter">
+                    <p>Selecione o Curso</p>
+                    <Select
+                      native
+                      fullWidth
+                      value={course}
+                      onChange={handleCourseType}
+                    >
+                      <option aria-label=" " value="" />
+                      <option value="ENGENHARIA CIVIL">ENGENHARIA CIVIL</option>
+                      <option value="ENGENHARIA AMBIENTAL">
+                        ENGENHARIA AMBIENTAL
+                      </option>
+                      <option value="ENGENHARIA DE PETRÓLEO">
+                        ENGENHARIA DE PETRÓLEO
+                      </option>
+                      <option value="ENGENHARIA DE PRODUÇÃO">
+                        ENGENHARIA DE PRODUÇÃO
+                      </option>
+                      <option value="ENGENHARIA MECÂNICA">
+                        ENGENHARIA MECÂNICA
+                      </option>
+                      <option value="ENGENHARIA ELÉTRICA">
+                        ENGENHARIA ELÉTRICA
+                      </option>
+                      <option value="ENGENHARIA DE COMPUTAÇÃO E INFORMAÇÃO">
+                        ENGENHARIA DE COMPUTAÇÃO E INFORMAÇÃO
+                      </option>
+                      <option value="ENGENHARIA ELETRÔNICA E DE COMPUTAÇÃO">
+                        ENGENHARIA ELETRÔNICA E DE COMPUTAÇÃO
+                      </option>
+                      <option value="TODAS AS ENGENHARIAS">
+                        TODAS AS ENGENHARIAS
+                      </option>
+                    </Select>
                   </div>
-                  <div className="iconSection">
-                    <MdKeyboardArrowRight />
+                  <div className="filter">
+                    <p>Selecione o Tipo de Oprtunidade</p>
+                    <Select
+                      native
+                      fullWidth
+                      value={vacancyType}
+                      onChange={handleVacancyType}
+                    >
+                      <option aria-label=" " value="" />
+                      <option value="ESTÁGIO">ESTÁGIO</option>
+                      <option value="TRAINEE">TRAINEE</option>
+                      <option value="EMPREGO">EMPREGO</option>
+                    </Select>
                   </div>
-                </button>
-              </VacanciesCard>
-            ))}
-            <div className="pageMenu">
-              <div>
-                <button
-                  type="button"
-                  disabled={pageNumber === 1}
-                  onClick={() => setPageNumber(pageNumber - 1)}
-                >
-                  <MdKeyboardArrowLeft
-                    color={pageNumber === 1 ? "red" : "blue"}
-                  />
-                </button>
+                </div>
+                <div className="createVacancyButtonSection">
+                  <button
+                    type="button"
+                    onClick={() => setCreateVacancyMode(true)}
+                  >
+                    <p>Criar Anuncio de Oportunidade</p>
+                  </button>
+                </div>
               </div>
-              <div className="pageNumber">
-                <p>{pageNumber}</p>
+              <div className="vacanciesList">
+                {vacancies.map((vacancy) => (
+                  <VacanciesCard>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentVacancy(vacancy)}
+                    >
+                      <div className="content">
+                        <div className="typeRow">
+                          <p>{vacancy.tipo}</p>
+                        </div>
+                        <div className="generalInfo">
+                          {vacancy.nome_empresa && (
+                            <p>{vacancy.nome_empresa}</p>
+                          )}
+                          {vacancy.modalidade && (
+                            <>
+                              <BsDot />
+                              <p>{vacancy.modalidade}</p>
+                            </>
+                          )}
+                          {vacancy.local_de_trabalho && (
+                            <>
+                              <BsDot />
+                              <p>{vacancy.local_de_trabalho}</p>
+                            </>
+                          )}
+                          {vacancy.previsao_formatura && (
+                            <>
+                              <BsDot />
+                              <p>Formando até {vacancy.previsao_formatura}</p>
+                            </>
+                          )}
+                        </div>
+                        <div className="rowInfo">
+                          <p>Cursos: </p>
+                          <p>{vacancy.cursos}</p>
+                        </div>
+                        <div className="rowInfo">
+                          <p>Cargo: </p>
+                          {vacancy.cargo ? (
+                            <p>{vacancy.cargo}</p>
+                          ) : (
+                            <p className="uninformed">não informado</p>
+                          )}
+                        </div>
+                        <div className="rowInfo">
+                          <p>Atividades: </p>
+                          {vacancy.atividades ? (
+                            <p>{vacancy.atividades}</p>
+                          ) : (
+                            <p className="uninformed">não informado</p>
+                          )}
+                        </div>
+                        <div className="rowInfo">
+                          <p>Remuneração: </p>
+                          {vacancy.valor_da_bolsa ? (
+                            <p>
+                              {vacancy.valor_da_bolsa?.toLocaleString("pt-br", {
+                                style: "currency",
+                                currency: "BRL",
+                              })}
+                            </p>
+                          ) : (
+                            <p className="uninformed">não informado</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="iconSection">
+                        <MdKeyboardArrowRight />
+                      </div>
+                    </button>
+                  </VacanciesCard>
+                ))}
+                <div className="pageMenu">
+                  <div>
+                    <button
+                      type="button"
+                      disabled={pageNumber === 1}
+                      onClick={() => setPageNumber(pageNumber - 1)}
+                    >
+                      <MdKeyboardArrowLeft color="#1c194f" />
+                    </button>
+                  </div>
+                  <div className="pageNumber">
+                    <p>{pageNumber}</p>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => setPageNumber(pageNumber + 1)}
+                    >
+                      <MdKeyboardArrowRight color="#1c194f" />
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div>
-                <button
-                  type="button"
-                  onClick={() => setPageNumber(pageNumber + 1)}
-                >
-                  <MdKeyboardArrowRight color="white" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </VacanciesPanel>
+            </VacanciesPanel>
+          )}
+        </>
       )}
     </Container>
   );

@@ -3,11 +3,27 @@ import styled from "styled-components";
 export const Container = styled.div`
   padding: 1rem;
   height: 100vh;
+
+  .backSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    p {
+      font-size: 1.25rem;
+    }
+  }
 `;
 
 export const PageHeader = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 2rem;
 
   .firstRow {
     display: flex;
@@ -67,6 +83,12 @@ export const VacanciesPanel = styled.div`
   flex-direction: column;
 
   .menuPanel {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+    div {
+      margin-right: 2rem;
+    }
   }
 
   .vacanciesList {
@@ -83,7 +105,7 @@ export const VacanciesPanel = styled.div`
     .pageNumber {
       margin: 0 1rem;
       border-radius: 100%;
-      background-color: grey;
+      background-color: #1c194f;
       width: 1.25rem;
       height: 1.25rem;
       display: flex;
@@ -92,7 +114,7 @@ export const VacanciesPanel = styled.div`
       align-items: center;
       p {
         font-size: 0.75rem;
-        color: grey;
+        color: #ffffff;
       }
     }
   }
@@ -108,7 +130,6 @@ export const VacanciesCard = styled.div`
     &:hover {
       background-color: #ffcb70;
     }
-    height: 10rem;
 
     display: flex;
     flex-direction: row;
@@ -144,6 +165,8 @@ export const VacanciesCard = styled.div`
       .rowInfo {
         display: flex;
         flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
 
         p:first-child {
           margin-right: 0.375rem;
@@ -156,10 +179,15 @@ export const VacanciesCard = styled.div`
           font-size: 1rem;
           color: #2b2676;
         }
+
+        .uninformed {
+          font-style: italic;
+        }
       }
     }
 
     .iconSection {
+      align-self: center;
       width: 10%;
       height: 100%;
       display: flex;
@@ -179,7 +207,7 @@ export const VacanciesCard = styled.div`
     border-radius: 0.5rem;
     background-color: #fecda5;
 
-    height: 24rem;
+    /* height: 24rem; */
 
     display: flex;
     flex-direction: row;
@@ -215,6 +243,8 @@ export const VacanciesCard = styled.div`
       .rowInfo {
         display: flex;
         flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
 
         p:first-child {
           margin-right: 0.375rem;
@@ -227,10 +257,15 @@ export const VacanciesCard = styled.div`
           font-size: 1rem;
           color: #2b2676;
         }
+
+        .uninformed {
+          font-style: italic;
+        }
       }
     }
 
     .iconSection {
+      align-self: center;
       width: 10%;
       height: 100%;
       display: flex;

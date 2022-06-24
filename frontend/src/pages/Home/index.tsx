@@ -1,23 +1,21 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
+import {
+  MdKeyboardArrowRight,
+  MdKeyboardArrowLeft,
+  MdArrowBack,
+} from "react-icons/md";
 import { BsDot } from "react-icons/bs";
 import { Form } from "@unform/web";
 import { FormHandles, SubmitHandler } from "@unform/core";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 
 // Service Import
-// import api from "../../services/api";
-
-// Component import
-// import Input from "../../components/Input";
+import api from "../../services/api";
 
 // Component import
 import Input from "../../components/Input";
-
-// Examples import
-import exemplo_vaga_1 from "./exemplo_vaga/exemplo_vaga_1.json";
-import exemplo_vaga_2 from "./exemplo_vaga/exemplo_vaga_2.json";
-import exemplo_vaga_3 from "./exemplo_vaga/exemplo_vaga_3.json";
 
 // Model import
 import { IVacancy } from "../../models";
@@ -32,6 +30,8 @@ const Home: React.FC = () => {
   const [currentVacancy, setCurrentVacancy] = useState<IVacancy | null>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [adminAccess, setAdminAccess] = useState<boolean>(false);
+  const [course, setCourse] = useState<any>("");
+  const [vacancyType, setVacancyType] = useState<any>("");
 
   // Local refs
   const formAdminLoginRef = useRef<FormHandles>(null);
@@ -46,34 +46,9 @@ const Home: React.FC = () => {
   const getVacancies = useCallback(async () => {
     try {
       // API call
-      // await fetch("http://localhost:8080/post", { method: "POST" });
-      // const response = await api.get("/vagas/1", {});
-      // const { vagas } = response.data;
-      // response = Object.keys(response).map(i => JSON.parse(response[Number(i)]));
+      const response = await api.get(`/vagas/${pageNumber}`, {});
 
-      const response = [
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-        exemplo_vaga_1,
-        exemplo_vaga_2,
-        exemplo_vaga_3,
-      ];
-
-      setVacancies(response);
-      // setFilteredOriginalData(response);
-      // setFilteredData(response);
-
-      // setLoading(false);
+      setVacancies(response.data.vagas);
     } catch (err: any) {
       // eslint-disable-next-line no-console
       console.log(err);
@@ -83,7 +58,7 @@ const Home: React.FC = () => {
 
       throw err;
     }
-  }, []);
+  }, [pageNumber]);
 
   // Initial load
   useEffect(() => {
@@ -103,10 +78,25 @@ const Home: React.FC = () => {
     } else {
       setAdminAccess(false);
     }
-
-    //   vaiPraPagina(/admin)
-    // }
   }, []);
+
+  const handleCourseType = (
+    event: React.ChangeEvent<{
+      name?: string;
+      value: unknown;
+    }>
+  ) => {
+    setCourse(event.target.value);
+  };
+
+  const handleVacancyType = (
+    event: React.ChangeEvent<{
+      name?: string;
+      value: unknown;
+    }>
+  ) => {
+    setVacancyType(event.target.value);
+  };
 
   return (
     <Container>
@@ -156,7 +146,10 @@ const Home: React.FC = () => {
       {currentVacancy ? (
         <>
           <button type="button" onClick={() => setCurrentVacancy(null)}>
-            voltar
+            <div className="backSection">
+              <MdArrowBack />
+              <p>voltar</p>
+            </div>
           </button>
           <VacanciesCard>
             <div className="fullCard">
@@ -165,63 +158,144 @@ const Home: React.FC = () => {
                   <p>{currentVacancy.tipo}</p>
                 </div>
                 <div className="generalInfo">
-                  <p>{currentVacancy.nome_empresa}</p>
-                  <BsDot />
-                  <p>{currentVacancy.modalidade}</p>
-                  <BsDot />
-                  <p>{currentVacancy.local_de_trabalho}</p>
-                  <BsDot />
+                  {currentVacancy.nome_empresa && (
+                    <p>{currentVacancy.nome_empresa}</p>
+                  )}
+                  {currentVacancy.modalidade && (
+                    <>
+                      <BsDot />
+                      <p>{currentVacancy.modalidade}</p>
+                    </>
+                  )}
+                  {currentVacancy.local_de_trabalho && (
+                    <>
+                      <BsDot />
+                      <p>{currentVacancy.local_de_trabalho}</p>
+                    </>
+                  )}
                   {currentVacancy.previsao_formatura && (
-                    <p>Formando até {currentVacancy.previsao_formatura}</p>
+                    <>
+                      <BsDot />
+                      <p>Formando até {currentVacancy.previsao_formatura}</p>
+                    </>
                   )}
                 </div>
                 <div className="rowInfo">
                   <p>Cursos: </p>
-                  <p>{currentVacancy.curso}</p>
+                  <p>{currentVacancy.cursos}</p>
                 </div>
                 <div className="rowInfo">
                   <p>Cargo: </p>
-                  <p>{currentVacancy.cargo}</p>
+                  {currentVacancy.cargo ? (
+                    <p>{currentVacancy.cargo}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Atividades: </p>
-                  <p>{currentVacancy.atividades}</p>
+                  {currentVacancy.atividades ? (
+                    <p>{currentVacancy.atividades}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Remuneração: </p>
-                  <p>{currentVacancy.valor_da_bolsa}</p>
+                  {currentVacancy.valor_da_bolsa ? (
+                    <p>
+                      {currentVacancy.valor_da_bolsa.toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Area da Empresa: </p>
-                  <p>{currentVacancy.area_empresa}</p>
+                  {currentVacancy.area_empresa ? (
+                    <p>{currentVacancy.area_empresa}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Requisitos: </p>
-                  <p>{currentVacancy.requisitos}</p>
+                  {currentVacancy.requisitos ? (
+                    <p>{currentVacancy.requisitos}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Carga Horária: </p>
-                  <p>{currentVacancy.carga_horaria_semanal}</p>
+                  {currentVacancy.carga_horaria_semanal ? (
+                    <p>{currentVacancy.carga_horaria_semanal}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Vale Refeição: </p>
-                  <p>{currentVacancy.vale_refeicao}</p>
+                  {currentVacancy.vale_refeicao === true &&
+                  currentVacancy.valor_vale_refeicao ? (
+                    <p>
+                      {currentVacancy.valor_vale_refeicao?.toLocaleString(
+                        "pt-br",
+                        {
+                          style: "currency",
+                          currency: "BRL",
+                        }
+                      )}
+                    </p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Vale Transporte: </p>
-                  <p>{currentVacancy.vale_transporte}</p>
+                  {currentVacancy.vale_transporte === true &&
+                  currentVacancy.valor_vale_transporte ? (
+                    <p>
+                      {currentVacancy.valor_vale_transporte?.toLocaleString(
+                        "pt-br",
+                        {
+                          style: "currency",
+                          currency: "BRL",
+                        }
+                      )}
+                    </p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Plano de Saúde: </p>
-                  <p>{currentVacancy.plano_de_saude}</p>
+                  {currentVacancy.plano_de_saude === true ? (
+                    <p>sim</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Contato para inscrição: </p>
-                  <p>{currentVacancy.contato_inscricao_texto}</p>
+                  {currentVacancy.contato_inscricao_texto ? (
+                    <p>{currentVacancy.contato_inscricao_texto}</p>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
                 <div className="rowInfo">
                   <p>Link: </p>
-                  <p>{currentVacancy.contato_inscricao_link}</p>
+                  {currentVacancy.contato_inscricao_link ? (
+                    <a href={currentVacancy.contato_inscricao_link}>
+                      {currentVacancy.contato_inscricao_link}
+                    </a>
+                  ) : (
+                    <p className="uninformed">não informado</p>
+                  )}
                 </div>
               </div>
               <div className="imageSection">
@@ -236,8 +310,52 @@ const Home: React.FC = () => {
       ) : (
         <VacanciesPanel>
           <div className="menuPanel">
-            <p>Selecione o tipo</p>
-            <p>Selecione o curso</p>
+            <div>
+              <p>Selecione o Curso</p>
+              <Select
+                native
+                fullWidth
+                value={course}
+                onChange={handleCourseType}
+              >
+                <option aria-label=" " value="" />
+                <option value="ENGENHARIA CIVIL">ENGENHARIA CIVIL</option>
+                <option value="ENGENHARIA AMBIENTAL">
+                  ENGENHARIA AMBIENTAL
+                </option>
+                <option value="ENGENHARIA DE PETRÓLEO">
+                  ENGENHARIA DE PETRÓLEO
+                </option>
+                <option value="ENGENHARIA DE PRODUÇÃO">
+                  ENGENHARIA DE PRODUÇÃO
+                </option>
+                <option value="ENGENHARIA MECÂNICA">ENGENHARIA MECÂNICA</option>
+                <option value="ENGENHARIA ELÉTRICA">ENGENHARIA ELÉTRICA</option>
+                <option value="ENGENHARIA DE COMPUTAÇÃO E INFORMAÇÃO">
+                  ENGENHARIA DE COMPUTAÇÃO E INFORMAÇÃO
+                </option>
+                <option value="ENGENHARIA ELETRÔNICA E DE COMPUTAÇÃO">
+                  ENGENHARIA ELETRÔNICA E DE COMPUTAÇÃO
+                </option>
+                <option value="TODAS AS ENGENHARIAS">
+                  TODAS AS ENGENHARIAS
+                </option>
+              </Select>
+            </div>
+            <div>
+              <p>Selecione o Tipo de Oprtunidade</p>
+              <Select
+                native
+                fullWidth
+                value={vacancyType}
+                onChange={handleVacancyType}
+              >
+                <option aria-label=" " value="" />
+                <option value="ESTÁGIO">ESTÁGIO</option>
+                <option value="TRAINEE">TRAINEE</option>
+                <option value="EMPREGO">EMPREGO</option>
+              </Select>
+            </div>
           </div>
           <div className="vacanciesList">
             {vacancies.map((vacancy) => (
@@ -251,31 +369,58 @@ const Home: React.FC = () => {
                       <p>{vacancy.tipo}</p>
                     </div>
                     <div className="generalInfo">
-                      <p>{vacancy.nome_empresa}</p>
-                      <BsDot />
-                      <p>{vacancy.modalidade}</p>
-                      <BsDot />
-                      <p>{vacancy.local_de_trabalho}</p>
-                      <BsDot />
+                      {vacancy.nome_empresa && <p>{vacancy.nome_empresa}</p>}
+                      {vacancy.modalidade && (
+                        <>
+                          <BsDot />
+                          <p>{vacancy.modalidade}</p>
+                        </>
+                      )}
+                      {vacancy.local_de_trabalho && (
+                        <>
+                          <BsDot />
+                          <p>{vacancy.local_de_trabalho}</p>
+                        </>
+                      )}
                       {vacancy.previsao_formatura && (
-                        <p>Formando até {vacancy.previsao_formatura}</p>
+                        <>
+                          <BsDot />
+                          <p>Formando até {vacancy.previsao_formatura}</p>
+                        </>
                       )}
                     </div>
                     <div className="rowInfo">
                       <p>Cursos: </p>
-                      <p>{vacancy.curso}</p>
+                      <p>{vacancy.cursos}</p>
                     </div>
                     <div className="rowInfo">
                       <p>Cargo: </p>
-                      <p>{vacancy.cargo}</p>
+                      {vacancy.cargo ? (
+                        <p>{vacancy.cargo}</p>
+                      ) : (
+                        <p className="uninformed">não informado</p>
+                      )}
                     </div>
                     <div className="rowInfo">
                       <p>Atividades: </p>
-                      <p>{vacancy.atividades}</p>
+                      {vacancy.atividades ? (
+                        <p>{vacancy.atividades}</p>
+                      ) : (
+                        <p className="uninformed">não informado</p>
+                      )}
                     </div>
                     <div className="rowInfo">
                       <p>Remuneração: </p>
-                      <p>{vacancy.valor_da_bolsa}</p>
+                      {vacancy.valor_da_bolsa ? (
+                        <p>
+                          {vacancy.valor_da_bolsa?.toLocaleString("pt-br", {
+                            style: "currency",
+                            currency: "BRL",
+                          })}
+                        </p>
+                      ) : (
+                        <p className="uninformed">não informado</p>
+                      )}
                     </div>
                   </div>
                   <div className="iconSection">
@@ -291,9 +436,7 @@ const Home: React.FC = () => {
                   disabled={pageNumber === 1}
                   onClick={() => setPageNumber(pageNumber - 1)}
                 >
-                  <MdKeyboardArrowLeft
-                    color={pageNumber === 1 ? "red" : "blue"}
-                  />
+                  <MdKeyboardArrowLeft color="#1c194f" />
                 </button>
               </div>
               <div className="pageNumber">
@@ -304,7 +447,7 @@ const Home: React.FC = () => {
                   type="button"
                   onClick={() => setPageNumber(pageNumber + 1)}
                 >
-                  <MdKeyboardArrowRight color="white" />
+                  <MdKeyboardArrowRight color="#1c194f" />
                 </button>
               </div>
             </div>
