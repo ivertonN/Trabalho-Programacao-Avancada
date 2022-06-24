@@ -12,11 +12,23 @@ client.connect(err => {
     global.conn = client.db(DATABASE_NAME)
 })
 
-function findAll(pagina) {
+function findAll(pagina, filtroTipos, filtroCursos) {
     const TAMANHO_PAGINA = 5;
     const tamanhoSkip = TAMANHO_PAGINA * (pagina - 1); 
+
+    const andFinal = []
+
+    const orTipos = { $or: filtroTipos }
+    const orCursos = { $or: filtroCursos }
+
+    if (filtroTipos.length) { andFinal.push( orTipos ) }
+    if (filtroCursos.length) { andFinal.push( orCursos ) }
+
+    const filtros = {}
+    if (filtros.length) { filtros['$and'] = andFinal }
+
     return global.conn.collection(COLLECTION_NAME)
-                        .find()
+                        .find(filtros)
                         .skip(tamanhoSkip)
                         .limit(TAMANHO_PAGINA)
                         .toArray(); 
