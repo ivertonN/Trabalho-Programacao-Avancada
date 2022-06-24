@@ -58,16 +58,29 @@ const Admin: React.FC = () => {
   const getVacancies = useCallback(async () => {
     try {
       // API call
-      const response = await api.get(`/vagas/${pageNumber}`, {});
+      const vacancyTypeFilter = vacancyType === "" ? "_" : vacancyType;
+      const courseTypeFilter = course === "" ? "_" : course;
+
+      const response = await api.get(
+        `/vagas/${pageNumber}/${vacancyTypeFilter}/${courseTypeFilter}`
+      );
 
       setVacancies(response.data.vagas);
     } catch (err: any) {
       // eslint-disable-next-line no-console
       console.log(err);
 
+      // Loading set
+      // setLoading(false);
+
       throw err;
     }
-  }, [pageNumber]);
+  }, [pageNumber, course, vacancyType]);
+
+  // Initial load
+  useEffect(() => {
+    getVacancies();
+  }, [getVacancies]);
 
   // Initial load
   useEffect(() => {
@@ -170,8 +183,9 @@ const Admin: React.FC = () => {
       } = data;
 
       try {
+        console.log(tipo);
         // eslint-disable-next-line no-underscore-dangle
-        await api.post(`/edit/:${currentVacancy?._id}`, {
+        await api.post(`/edit/${currentVacancy?._id}`, {
           nome_empresa: nomeEmpresa,
           area_empresa: areaEmpresa,
           atividades,
@@ -204,6 +218,7 @@ const Admin: React.FC = () => {
     }>
   ) => {
     setCourse(event.target.value);
+    setPageNumber(1);
   };
 
   const handleVacancyType = (
@@ -213,6 +228,7 @@ const Admin: React.FC = () => {
     }>
   ) => {
     setVacancyType(event.target.value);
+    setPageNumber(1);
   };
 
   const deleteVacancy = useCallback(async (vacancy: IVacancy) => {
