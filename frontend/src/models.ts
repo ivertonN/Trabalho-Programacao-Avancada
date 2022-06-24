@@ -1,5 +1,6 @@
 export interface IVacancy {
-  id: string;
+  id?: string;
+  _id?: string;
   tipo: string;
   nome_empresa: string;
   previsao_formatura?: string;

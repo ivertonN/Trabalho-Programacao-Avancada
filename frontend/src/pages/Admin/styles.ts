@@ -105,7 +105,7 @@ export const VacanciesPanel = styled.div`
     .filterSection {
       display: flex;
       flex-direction: row;
-      width: 50%;
+      width: 70%;
       .filter {
         margin-right: 2rem;
       }
@@ -115,7 +115,7 @@ export const VacanciesPanel = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
-      width: 50%;
+      width: 30%;
       button {
         background-color: #fecda5;
         &:hover {
