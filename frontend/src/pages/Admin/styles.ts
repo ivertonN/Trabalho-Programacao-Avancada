@@ -1,648 +1,318 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   padding: 1rem;
-  height: 100%;
-`;
+  height: 100vh;
 
-export const StoresPanel = styled.div`
-  border-radius: 0.25rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  .pageTitle {
+  .menu {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     margin-bottom: 1rem;
 
-    .backIcon {
-      color: ${({ theme }) => theme.button_high};
-      font-size: 1.5rem;
-    }
-
-    h2 {
-      margin-left: 0.5rem;
-    }
-  }
-
-  .loading {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .tableActions {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-`;
-
-export const StoresTable = styled.div`
-  margin-top: 1.5rem;
-  width: 100%;
-
-  .pillOptions {
-    display: grid;
-    grid-template-columns: 0.5fr repeat(6, 1fr) 0.5fr;
-    padding: 0 1rem 0 1rem;
-    position: absolute;
-
-    .options {
-      background-color: ${({ theme }) => theme.background_primary};
-      border-radius: 0.25rem;
-      box-shadow: 0.625rem 0.313rem 0.313rem
-        ${({ theme }) => theme.background_low};
-
-      .option {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        .MuiCheckbox-colorPrimary {
-          color: ${({ theme }) => theme.button_high};
-        }
-        .MuiCheckbox-root {
-          padding-right: 0.25rem;
-        }
-      }
-    }
-  }
-
-  .header {
-    background-color: ${({ theme }) => theme.background_secondary};
-    border-top: 0.063rem solid ${({ theme }) => theme.background_secondary};
-    border-bottom: 0.063rem solid ${({ theme }) => theme.background_secondary};
-    padding: 0.5rem 1rem;
-    display: grid;
-    grid-template-columns: 0.5fr repeat(6, 1fr) 0.5fr;
-
-    div {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      p {
-        color: ${({ theme }) => theme.background_low};
-        border: none;
-        padding: 0;
-        font-weight: 700;
-        margin-right: 0.5rem;
-      }
-
-      button {
-        font-size: 1rem;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-      }
-    }
-  }
-
-  .rowTable {
-    padding: 0.5rem 1rem;
-    display: grid;
-    grid-template-columns: 0.5fr repeat(6, 1fr) 0.5fr;
-    border-bottom: 0.063rem solid ${({ theme }) => theme.background_secondary};
-
-    div {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-
-      .hourSection {
+    .backSection {
+      .back {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+        align-items: center;
+        svg {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
 
-        .hourSectionInfo {
-          margin-left: 0.5rem;
-
-          .hour {
-            font-size: 0.625rem;
-            color: ${({ theme }) => theme.font_secondary};
-          }
+        p {
+          font-size: 1.25rem;
         }
       }
-
-      .numberCode {
-        color: ${({ theme }) => theme.font_secondary};
-      }
-
-      .price {
-        font-weight: 700;
-      }
-
-      .productQuantity {
-        color: ${({ theme }) => theme.font_secondary};
-        font-size: 0.75rem;
-      }
     }
 
-    .detailsButton {
-      font-size: 2rem;
-    }
-  }
-`;
-
-export const OrdersHeader = styled.div`
-  margin-top: 0.5rem;
-  width: 100%;
-
-  .header {
-    background-color: ${({ theme }) => theme.background_secondary};
-    border-top: 0.063rem solid ${({ theme }) => theme.background_secondary};
-    border-bottom: 0.063rem solid ${({ theme }) => theme.background_secondary};
-    padding: 0.5rem 1rem;
-    display: grid;
-    grid-template-columns: 0.5fr repeat(6, 1fr);
-
-    div {
+    .otherButtonsSection {
       display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      p {
-        color: ${({ theme }) => theme.background_low};
-        border: none;
-        padding: 0;
-        font-weight: 700;
+      flex-direction: row;
+      justify-content: flex-end;
+      button:first-child {
         margin-right: 0.5rem;
       }
-
       button {
-        font-size: 1rem;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-      }
-    }
-  }
-
-  .rowTable {
-    padding: 0.5rem 1rem;
-    display: grid;
-    grid-template-columns: 0.5fr repeat(6, 1fr);
-    border-bottom: 0.063rem solid ${({ theme }) => theme.background_secondary};
-
-    div {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-
-      .hourSection {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-
-        .hourSectionInfo {
-          margin-left: 0.5rem;
-
-          .hour {
-            font-size: 0.625rem;
-            color: ${({ theme }) => theme.font_secondary};
-          }
+        background-color: #fecda5;
+        &:hover {
+          background-color: #ffcb70;
         }
-      }
-
-      .numberCode {
-        color: ${({ theme }) => theme.font_secondary};
-      }
-
-      .price {
-        font-weight: 700;
-      }
-
-      .productQuantity {
-        color: ${({ theme }) => theme.font_secondary};
-        font-size: 0.75rem;
+        height: 100%;
+        border-radius: 0.5rem;
+        width: 12rem;
       }
     }
-
-    .detailsButton {
-      font-size: 2rem;
-    }
-  }
-`;
-
-export const SearchBar = styled.div`
-  background-color: ${({ theme }) => theme.background_high};
-  border: 0.063rem solid ${({ theme }) => theme.font_secondary};
-  border-radius: 0.5rem;
-  color: ${({ theme }) => theme.font_low};
-  margin-left: 0;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  div {
-    padding: 0 0.75rem 0 0.75rem;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: ${({ theme }) => theme.font_low};
-    font-size: 1.5rem;
   }
 
-  .inputInput {
-    width: 100%;
-    color: ${({ theme }) => theme.font_low};
-    font-size: 0.875rem;
-  }
-`;
-
-export const Pill = styled.p`
-  background-color: ${props => props.color};
-  padding: 0.25rem 0.625rem;
-  border-radius: 1rem;
-  margin: 0.25rem;
-  width: fit-content;
-  p {
-    color: ${({ theme }) => theme.font_low};
-  }
-`;
-
-export const StatusLabel = styled.p`
-  color: ${props => props.color};
-  border: 0.063rem solid;
-  padding: 0.25rem 0.625rem;
-  border-radius: 1rem;
-  margin: 0.25rem;
-  width: fit-content;
-`;
-
-export const DetailsPanel = styled.div`
-  background-color: ${({ theme }) => theme.background_primary};
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  display: grid;
-  grid-template-columns: 14fr 1fr 13fr 1fr 14fr;
-  height: 20rem;
-
-  .divider {
-    width: 0;
-    height: 80%;
-    border: ${({ theme }) => theme.background_secondary} solid 0.125rem;
-    justify-self: center;
-    align-self: center;
-  }
-
-  .sectionPanel {
+  .formSection {
     display: flex;
     flex-direction: column;
-    min-height: -webkit-fill-available;
+    width: 100%;
 
-    .rolagem2 {
-      margin-top: 0.125rem;
-      height: 100%;
-      display:flex;
-      flex-direction: column;
-      overflow: hidden;
-      overflow-y: scroll;
-      padding-right: 0.25rem; ;
+    .form {
+      width: 50rem;
+      align-self: center;
 
-      /* width */
-      ::-webkit-scrollbar {
-        width: 0.25rem;
+      button {
+        background-color: #fecda5;
+        &:hover {
+          background-color: #ffcb70;
+        }
+        height: 4rem;
+        border-radius: 0.5rem;
+        width: 100%;
+        margin-bottom: 4rem;
       }
-      /* Track */
-      ::-webkit-scrollbar-track {
-        background: none;
-      }
-      /* Handle */
-      ::-webkit-scrollbar-thumb {
-        background:${({ theme }) => theme.background_secondary};
-        border-radius: 0.25rem;
-      }
-      /* Handle on hover */
-      ::-webkit-scrollbar-thumb:hover {
-        background: #555;
+    }
+  }
+`;
+
+export const PageHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+
+  .firstRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .logo {
+    }
+  }
+
+  .appName {
+    align-self: center;
+
+    p {
+      font-size: 2rem;
+      color: #1c194f;
+    }
+  }
+`;
+
+export const VacanciesPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  .menuPanel {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+
+    .filterSection {
+      display: flex;
+      flex-direction: row;
+      width: 70%;
+      .filter {
+        margin-right: 2rem;
       }
     }
 
-    .sectionPanelTitle {
+    .createVacancyButtonSection {
       display: flex;
-      font-weight: 700;
-      font-size: 1.125rem;
-      color: ${({ theme }) => theme.background_secondary};
-
-      .sectionPanelTitleSecondary {
-        margin-left: 2rem;
-        color: ${({ theme }) => theme.background_high};
-      }
-
-      .pill {
-        font-weight: 400;
-        font-size: 0.875rem;
-        margin-left: 1.5rem;
-        color: ${({ theme }) => theme.background_high};
+      flex-direction: row;
+      justify-content: flex-end;
+      width: 30%;
+      button {
+        background-color: #fecda5;
+        &:hover {
+          background-color: #ffcb70;
+        }
+        height: 100%;
+        border-radius: 0.5rem;
+        width: 12rem;
       }
     }
+  }
 
-    .sectionContent {
+  .vacanciesList {
+  }
+
+  .pageMenu {
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    .pageNumber {
+      margin: 0 1rem;
+      border-radius: 100%;
+      background-color: #1c194f;
+      width: 1.25rem;
+      height: 1.25rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      p {
+        font-size: 0.75rem;
+        color: #ffffff;
+      }
+    }
+  }
+`;
+
+export const VacanciesCard = styled.div`
+  margin-bottom: 1rem;
+
+  button {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #fecda5;
+    &:hover {
+      background-color: #ffcb70;
+    }
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .content {
       display: flex;
       flex-direction: column;
       height: 100%;
-      padding: 0.625rem;
+      width: 90%;
+      justify-content: flex-start;
+      align-items: flex-start;
 
-      .sectionSubContentVertical {
-        display: flex;
-        flex-direction: column;
-
-        .sectionSubContentTitle {
-          font-weight: 700;
-          font-size: 0.875rem;
-          padding-bottom: 0.5rem;
-          border-bottom: ${({ theme }) => theme.background_secondary} solid
-            0.063rem;
+      .typeRow {
+        margin-bottom: 0.125rem;
+        p {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #2b2676;
         }
-
-        .sectionSubContentInfo {
-          font-size: 0.875rem;
-
-          p {
-            margin: 0.5rem 0 0.5rem;
-          }
+      }
+      .generalInfo {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 0.5rem;
+        p {
+          font-weight: 500;
+          font-size: 1.125rem;
+          color: #2b2676;
         }
       }
 
-      .sectionSubContentHorizontal {
+      .rowInfo {
         display: flex;
-        border-bottom: ${({ theme }) => theme.background_secondary} solid
-          0.125rem;
-          padding-bottom: .5rem;
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
 
-        .sectionSubContentInfo {
-          margin-right: 1rem;
+        p:first-child {
+          margin-right: 0.375rem;
+          font-weight: 600;
+        }
 
-          .title {
-            display: flex;
-            align-items: center;
-            font-weight: 700;
-            font-size: 0.75rem;
-            margin-bottom: 0.5rem;
+        p {
+          margin-top: 0.125rem;
+          font-weight: 500;
+          font-size: 1rem;
+          color: #2b2676;
+        }
 
-            p{
-              margin-left: 0.25rem;
-            }
-          }
+        .uninformed {
+          font-style: italic;
+        }
+      }
+    }
 
-          .valueText {
-            display: flex;
-            align-items: center;
-            font-weight: 700;
-            font-size: 0.75rem;
-            margin-bottom: 0.5rem;
+    .iconSection {
+      align-self: center;
+      width: 10%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
 
-            p {
-              margin: 0 0.25rem; 0 0.25rem;
-            }
-          }
+      svg {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+  }
+
+  .fullCard {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #fecda5;
+
+    /* height: 24rem; */
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 90%;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      .typeRow {
+        margin-bottom: 0.125rem;
+        p {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #2b2676;
+        }
+      }
+      .generalInfo {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 0.5rem;
+        p {
+          font-weight: 500;
+          font-size: 1.125rem;
+          color: #2b2676;
         }
       }
 
-      .sectionSubContentIntegration {
+      .rowInfo {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
 
-        .sectionSubContentIntegrationTitle {
-          font-weight: 700;
-          font-size: 0.875rem;
-          margin-bottom: 0.875rem;
+        p:first-child {
+          margin-right: 0.375rem;
+          font-weight: 600;
         }
 
-        .sectionSubContentIntegrationContent {
-          display: flex;
-          justify-content: space-between;
-
-          .sectionSubContentIntegrationContentText{
-            display: flex;
-            flex-direction: column;
-
-            P {
-              margin-bottom: 0.75rem;
-            }
-
-            .integratedPackageIn {
-              font-weight: 500;
-              font-size: 0.875rem;
-              color: ${({ theme }) => theme.button_success}
-            }
-
-            .canceledIn {
-              font-weight: 500;
-              font-size: 0.875rem;
-              color:  ${({ theme }) => theme.button_danger}
-            }
-          }
-
-          .sectionSubContentIntegrationContentInfo {
-            display: flex;
-            flex-direction: column;
-
-            P {
-              margin-bottom: 0.75rem;
-            }
-
-            .integratedPackageIn {
-              font-weight: 500;
-              font-size: 0.875rem;
-              color: ${({ theme }) => theme.button_success}
-            }
-
-            .canceledIn {
-              font-weight: 500;
-              font-size: 0.875rem;
-              color:  ${({ theme }) => theme.button_danger}
-            }
-          }
+        p {
+          margin-top: 0.125rem;
+          font-weight: 500;
+          font-size: 1rem;
+          color: #2b2676;
         }
 
-        .sectionSubContentProductCard {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          background-color:${({ theme }) => theme.background_primary};
-          border-radius: 0.25rem;
-          margin-bottom: 0.5rem;
-          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-          .productInfo {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            justify-content: space-between;
-            padding: 0.75rem;
-
-            .productInfoTitle {
-              font-size: 1rem;
-            }
-
-            .productRef {
-              font-size: 0.75rem;
-              color: ${({ theme }) => theme.button_secondary}
-            }
-
-            .price {
-              display: flex;
-
-              .originalPrice {
-                font-size: 0.875rem;
-                text-decoration-line: line-through;
-                margin-right: 1rem;
-              }
-
-              .currentPrice {
-                font-weight: 700;
-                font-size: 0.875rem;
-                color: ${({ theme }) => theme.font_danger};
-              }
-            }
-
-            .productInfoFooter {
-              display: flex;
-              justify-content: space-between;
-
-              .productDeadline {
-                font-weight: 700;
-                font-size: 0.875rem;
-              }
-
-              .productQuantity {
-                font-weight: 700;
-                font-size: 0.875rem;
-              }
-            }
-          }
+        .uninformed {
+          font-style: italic;
         }
       }
+    }
 
-      .rolagem {
-        margin-top: 0.125rem;
-        height: 65%;
-        display:flex;
-        flex-direction: column;
-        overflow: hidden;
-        overflow-y: scroll;
-        padding-right: 0.25rem; ;
-        /* width */
-        ::-webkit-scrollbar {
-          width: 0.25rem;
-        }
-        /* Track */
-        ::-webkit-scrollbar-track {
-          background: none;
-        }
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-          background:${({ theme }) => theme.background_secondary};
-          border-radius: 0.25rem;
-        }
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-          background: #555;
-        }
+    .iconSection {
+      align-self: center;
+      width: 10%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
 
-        .sectionSubContentPaymentType {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          height: 100%;
-
-          .sectionSubContentPaymentTypeTitle {
-            margin-top: .5rem;
-            display:flex;
-            align-items: center;
-            font-weight: 700;
-            font-size: 1rem;
-            color: ${({ theme }) => theme.background_secondary};
-
-            .paymentType {
-              margin-right: 0.25rem;
-            }
-
-            .paymentTypeContent {
-              font-size: 0.875rem;
-              color: ${({ theme }) => theme.background_high};
-            }
-          }
-
-          .sectionSubContentPaymentTypeContent {
-            display: flex;
-            margin-top: .5rem;
-            margin-bottom: .5rem;
-
-            .sectionSubContentPaymentTypeContentInfo {
-              margin-right: 1rem;
-              display: flex;
-
-              .text {
-                display: flex;
-                flex-direction: column;
-                margin-left: 0.25rem;
-
-                .title {
-                  color: ${({ theme }) => theme.background_secondary};
-                  font-weight: 500;
-                  font-size: 0.625rem;
-                }
-
-                .hour {
-                  color: ${({ theme }) => theme.background_secondary};
-                  font-size: 0.625rem;
-                  font-weight: 400
-                }
-              }
-            }
-          }
-
-          .sectionSubContentPaymentTypeModals {
-            display: flex;
-            flex-direction: column;
-
-            .sectionSubContentPaymentTypeModalsTitle {
-              display: flex;
-              font-weight: 700;
-              font-size: 1.125rem;
-              margin-bottom: 1rem;
-
-              .text {
-                margin-right: 0.25rem
-              }
-            }
-
-            .sectionSubContentPaymentTypeModalsContent {
-              display:flex;
-              justify-content: space-between;
-
-              .modalButton {
-                height: 3rem;
-                width: 8.5rem;
-                border: ${({ theme }) =>
-                  theme.background_secondary} 0.063rem solid;
-                border-radius: 0.5rem;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                .modalButtonIcon {
-                  color: ${({ theme }) => theme.font_secondary}
-                }
-
-                p {
-                  color: ${({ theme }) => theme.font_high};
-                  font-weight: 700;
-                  font-size: 0.75rem;
-                  margin-left: 0.5rem;
-                }
-              }
-            }
-          }
-        }
+      svg {
+        width: 2.5rem;
+        height: 2.5rem;
       }
     }
   }
