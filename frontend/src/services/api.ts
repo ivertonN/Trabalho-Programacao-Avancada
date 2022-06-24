@@ -5,16 +5,7 @@ import axios from "axios";
 
 // Create axios instance
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: "http://localhost:8080",
 });
-
-api.interceptors.response.use(
-  (successResponse: any) => successResponse,
-  (errorResponse: any) => {
-    // When 401 error, sign out
-
-    return Promise.reject(errorResponse);
-  }
-);
 
 export default api;
