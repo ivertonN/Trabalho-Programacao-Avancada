@@ -13,9 +13,6 @@ import Select from "@material-ui/core/Select";
 import api from "../../services/api";
 
 // Component import
-// import Input from "../../components/Input";
-
-// Component import
 import Input from "../../components/Input";
 
 // Model import
@@ -69,11 +66,6 @@ const Admin: React.FC = () => {
     }
   }, [pageNumber]);
 
-  // Initial load
-  useEffect(() => {
-    getVacancies();
-  }, [getVacancies]);
-
   const createVacancySubmit: SubmitHandler<{
     areaEmpresa: string;
     atividades: string;
@@ -110,7 +102,7 @@ const Admin: React.FC = () => {
     } = data;
 
     try {
-      await api.post(`/new/`, {
+      await api.post(`/new`, {
         nome_empresa: nomeEmpresa,
         area_empresa: areaEmpresa,
         atividades,
@@ -171,7 +163,7 @@ const Admin: React.FC = () => {
 
       try {
         // eslint-disable-next-line no-underscore-dangle
-        await api.post(`/edit/:${currentVacancy?._id}`, {
+        await api.post(`/edit/${currentVacancy?._id}`, {
           nome_empresa: nomeEmpresa,
           area_empresa: areaEmpresa,
           atividades,
@@ -215,17 +207,23 @@ const Admin: React.FC = () => {
     setVacancyType(event.target.value);
   };
 
-  const deleteVacancy = useCallback(async (vacancy: IVacancy) => {
+  const deleteVacancy = useCallback(async () => {
     try {
       // eslint-disable-next-line no-underscore-dangle
-      await api.get(`/delete/${vacancy._id}`, {});
+      await api.get(`/delete/${currentVacancy?._id}`, {});
     } catch (err: any) {
       // eslint-disable-next-line no-console
       console.log(err);
 
       throw err;
     }
-  }, []);
+    // eslint-disable-next-line no-underscore-dangle
+  }, [currentVacancy?._id]);
+
+  // Initial load
+  useEffect(() => {
+    getVacancies();
+  }, [getVacancies, deleteVacancy, editionVacancySubmit, createVacancySubmit]);
 
   return (
     <Container>
@@ -278,7 +276,6 @@ const Admin: React.FC = () => {
                       label="Nome da Empresa"
                       value={currentVacancy.nome_empresa}
                     />
-                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
                     <Input
                       ref={areaEmpresaInputRef}
                       name="areaEmpresa"
@@ -315,14 +312,12 @@ const Admin: React.FC = () => {
                       label="Contato de Inscrição"
                       value={currentVacancy.contato_inscricao_texto}
                     />
-                    {/* <Input ref={createdAtInputRef} name="createdAt" label="Data de Lancamento" /> */}
                     <Input
                       ref={cursosInputRef}
                       name="cursos"
                       label="Curso"
                       value={currentVacancy.cursos}
                     />
-                    {/* <Input ref={data_limite_anuncioInputRef} name="login" label="login" /> */}
                     <Input
                       ref={imgInputRef}
                       name="img"
@@ -347,7 +342,6 @@ const Admin: React.FC = () => {
                       label="Modalidade"
                       value={currentVacancy.modalidade}
                     />
-                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
                     <Input
                       ref={previsaoFormaturaInputRef}
                       name="previsaoFormatura"
@@ -360,12 +354,6 @@ const Admin: React.FC = () => {
                       label="Requisitos"
                       value={currentVacancy.requisitos}
                     />
-                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
-                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
-                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
-                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
-                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
-                    {/* <Input ref={adminLoginInputRef} name="login" label="login" /> */}
                     <button
                       type="button"
                       onClick={() => {
@@ -400,7 +388,7 @@ const Admin: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      deleteVacancy(currentVacancy);
+                      deleteVacancy();
                       setCurrentVacancy(null);
                     }}
                   >

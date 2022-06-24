@@ -9,7 +9,6 @@ import { BsDot } from "react-icons/bs";
 import { Form } from "@unform/web";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
 
 // Service Import
 import api from "../../services/api";
@@ -38,10 +37,6 @@ const Home: React.FC = () => {
   const adminLoginInputRef = useRef<HTMLInputElement>(null);
   const adminPasswordInputRef = useRef<HTMLInputElement>(null);
 
-  // Get navigation hook
-  // const history = useHistory();
-  // const navigate = useNavigate();
-
   // Get vacancies
   const getVacancies = useCallback(async () => {
     try {
@@ -52,9 +47,6 @@ const Home: React.FC = () => {
     } catch (err: any) {
       // eslint-disable-next-line no-console
       console.log(err);
-
-      // Loading set
-      // setLoading(false);
 
       throw err;
     }
