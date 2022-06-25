@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "create-db": "node mongodb_create_db.js",
-    "drop-collection": "node mongodb_drop_collection.js",
+    "create-db": "node ./database/mongodb_create_db.js",
+    "drop-collection": "node ./database/mongodb_drop_collection.js",
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www"
   },

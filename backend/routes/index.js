@@ -1,11 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
+// Adiciona x meses a uma data
 function addMonths(date, months) {
   date.setMonth(date.getMonth() + months);
   return date;
 }
 
+// Funcao criada para tratamento dos dados vindos do frontend
 function createDoc(body) {
   const doc = {
     //obrigatorios
@@ -35,7 +37,7 @@ function createDoc(body) {
     titulo                 : ((body.titulo                 != null) ? body.titulo                            : null),  
   };
 
-  //retira valores null
+  //retira valores null para inserir no banco de dados apenas as variaveis preenchidas (com valores validos)
   Object.keys(doc).forEach((index) => {
     if(doc[index] === null) {
       delete doc[index]
@@ -45,6 +47,7 @@ function createDoc(body) {
   return doc;
 };
 
+// Funcao criada para retornar um documento vazio com todas as variaveis do banco ( nao foi utilizado )
 function getBlackDoc(){
   return {
     tipo                    : "",
@@ -79,6 +82,11 @@ router.post("/post", (req, res) => {
   res.redirect("/");
 });
 
+// Funcao utilizada para tratar os filtros vindos do frontend de forma a serem utilizados com maior facilidade 
+// no banco de dados
+// Ex:
+// (cursos, ['ENGENHARIA DE PETR\u00d3LEO', 'TODAS AS ENGENHARIAS'] ) 
+//                         => [ {cursos: 'ENGENHARIA DE PETR\u00d3LEO'}, {cursos: 'TODAS AS ENGENHARIAS'} ]
 function tratarFiltro(nome, filtros){
   const filtrosTratado = []
   filtros.map((e) => {
@@ -90,7 +98,7 @@ function tratarFiltro(nome, filtros){
   return filtrosTratado
 }
 
-/* GET vagas */
+/* GET vagas - passando filtros pelo path */
 router.get('/vagas/:pagina/:tipo/:cursos', async (req, res, next) => {
   console.log("vagas response");
   const pagina = parseInt(req.params.pagina || "1");
@@ -98,9 +106,11 @@ router.get('/vagas/:pagina/:tipo/:cursos', async (req, res, next) => {
 //  req.params.tipo = ['EST\u00c1GIO']
 //  req.params.cursos = ['ENGENHARIA DE PETR\u00d3LEO', 'TODAS AS ENGENHARIAS']
 
+  // Por simplicidade, consideramos o caractere "_" para omissao do filtro na rota
   let filtroTipos = ( req.params.tipo === "_" ) ? [] : [req.params.tipo]
   let filtroCursos = ( req.params.cursos === "_" ) ? [] : [req.params.cursos]
 
+  // Tratando filtros
   if (req.params.tipo || null){ filtroTipos = tratarFiltro('tipo', filtroTipos) }
   if (req.params.cursos || null){ filtroCursos = tratarFiltro('cursos', filtroCursos) }
 
@@ -114,13 +124,13 @@ router.get('/vagas/:pagina/:tipo/:cursos', async (req, res, next) => {
   }
 });
 
-/* GET new page post */
+/* GET new page post  ( Nao utilizado ) */
 router.get('/registration_page', (req, res, next) => {
   console.log("registration_page");
   res.render('new', { title: 'Novo Cadastro', doc: getBlackDoc(), action: '/new' });
 });
 
-/* GET new page update */
+/* GET new page update ( Nao utilizado ) */
 router.get('/edit_page/:id', async (req, res, next) => {
   const id = req.params.id;
  
@@ -132,9 +142,9 @@ router.get('/edit_page/:id', async (req, res, next) => {
   }
 })
 
-/* Post user. */
+/* Criacao de nova vaga no banco de dados. */
 router.post('/new', async (req, res, next) => {
-  
+  //Criacao do doc utilizando funcao auxiliar para tratamento de inputs
   const doc = createDoc(req.body)
  
   try {
@@ -146,9 +156,10 @@ router.post('/new', async (req, res, next) => {
   }
 });
 
-/* Update user. */
+/* Update de vaga no banco de dados. */
 router.post('/edit/:id', async (req, res, next) => {
   const id = req.params.id;
+  //Criacao do doc utilizando funcao auxiliar para tratamento de inputs
   const doc = createDoc(req.body)
 
   try {
@@ -160,7 +171,7 @@ router.post('/edit/:id', async (req, res, next) => {
   }
 });
 
-/* Delete user. */
+/* Delete de vaga no banco de dados. */
 router.get('/delete/:id', async (req, res, next) => {
   const id = req.params.id;
  

@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('trabalho-programacao-avancada:server');
 var http = require('http');
-global.db = require('../db');
+global.db = require('../database/db');
 /**
  * Get port from environment and store in Express.
  */
