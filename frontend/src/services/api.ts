@@ -5,7 +5,7 @@ import axios from "axios";
 
 // Create axios instance
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "https://poli-oportunidades-backend.herokuapp.com",
 });
 
 export default api;

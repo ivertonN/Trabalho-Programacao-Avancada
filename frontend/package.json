@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "https://poli-oportunidades-backend.herokuapp.com",
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@rocketseat/unform": "^1.6.2",
